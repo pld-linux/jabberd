@@ -2,7 +2,7 @@
 # Conditional build
 %bcond_without	db	# - don't build db storage and authreg backends
 %bcond_without	pgsql	# - don't build pgsql storage and authreg backends
-%bcond_without	mysql	# - don't build mysql storage and authreg backends
+%bcond_without	mysql	# - don't build MySQL storage and authreg backends
 %bcond_without	ldap	# - don't build ldap authreg backend
 #
 %include	/usr/lib/rpm/macros.perl
