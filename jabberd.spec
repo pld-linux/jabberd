@@ -1,12 +1,19 @@
 #
+# TODO:
+# - patch for examples to use mod offline and limit storage (sm.xml)
+#   then bounce to release 7,
+#
 # Conditional build
 %bcond_without	db	# - don't build db storage and authreg backends
 %bcond_without	pgsql	# - don't build PostgreSQL storage and authreg backends
 %bcond_without	mysql	# - don't build MySQL storage and authreg backends
 %bcond_without	ldap	# - don't build ldap authreg backend
 %bcond_without  sqlite	# - don't build SQLite v3 storage and authreg backends
+%bcond_without	oq	# - allows limiting the number of offline messages \
+			stored per user (mysql storage) and allows offline \
+			storage (queuing) of subscription requests and/or \
+			messages to be disabled
 %bcond_with	amp	# - Advanced Message Processing (JEP-0079) implementation
-%bcond_with	oq	# - allows limiting the number of offline messages stored per user (only with mysql storage so far)
 %bcond_with	bxmpp	# - patches c2s to allow connections from Flash clients which don't use proper XMPP
 
 %include	/usr/lib/rpm/macros.perl
@@ -14,7 +21,7 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s6
-Release:	6
+Release:	6.1
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
