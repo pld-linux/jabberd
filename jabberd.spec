@@ -24,6 +24,7 @@ BuildRequires:	rpm-perlprov >= 3.0.3-16
 Requires(post):	/usr/bin/perl
 Conflicts:	jabber
 Obsoletes:	jabber-irc-transport
+Obsoletes:	jabber-conference
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -109,11 +110,6 @@ fi
 rm -f /var/run/jabberd/* || :
 
 %postun
-# If package is being erased for the last time.
-if [ "$1" = "0" ]; then
-	%{_sbindir}/userdel jabber 2> /dev/null
-	%{_sbindir}/groupdel jabber 2> /dev/null
-fi
 
 %files
 %defattr(644,root,root,755)
