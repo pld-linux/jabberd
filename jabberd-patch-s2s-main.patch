@@ -1,0 +1,19 @@
+*** s2s/main.c.orig	Sat Sep 11 15:39:57 2004
+--- s2s/main.c	Sat Sep 11 15:40:05 2004
+***************
+*** 62,68 ****
+  
+  /** pull values out of the config file */
+  static void _s2s_config_expand(s2s_t s2s) {
+!     char *str, secret[40];
+      int i, r;
+  
+      s2s->id = config_get_one(s2s->config, "id", 0);
+--- 62,68 ----
+  
+  /** pull values out of the config file */
+  static void _s2s_config_expand(s2s_t s2s) {
+!     char *str, secret[41];
+      int i, r;
+  
+      s2s->id = config_get_one(s2s->config, "id", 0);

@@ -1,0 +1,19 @@
+*** util/xhash.c.orig	Mon May 31 23:31:06 2004
+--- util/xhash.c	Mon Sep 27 18:44:26 2004
+***************
+*** 71,77 ****
+      xhn n;
+      int i = index % h->prime;
+      for(n = &h->zen[i]; n != NULL; n = n->next)
+!         if(n->key != NULL && strncmp(key, n->key, len) == 0)
+              return n;
+      return NULL;
+  }
+--- 71,77 ----
+      xhn n;
+      int i = index % h->prime;
+      for(n = &h->zen[i]; n != NULL; n = n->next)
+!         if(n->key != NULL && (strlen(n->key)==len) && (strncmp(key, n->key, len) == 0))
+              return n;
+      return NULL;
+  }
