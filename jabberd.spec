@@ -28,7 +28,6 @@ Source2:	%{name}.sysconfig
 #bcond amp
 Source3:	http://svn.cmeerw.net/src/jabberd2/sqlite/tools/db-setup.sqlite
 Source4:	http://svn.cmeerw.net/src/jabberd2/sqlite/sm/storage_sqlite.c
-Source5:	http://neonux.org/jabberd2/mod_amp.c
 Patch0:		%{name}-perlscript.patch
 Patch1:		%{name}-daemonize.patch
 Patch2:		%{name}-default_config.patch
