@@ -27,10 +27,10 @@ Patch6:		%{name}-c2s_crash.patch
 Patch7:		%{name}-digest_md5_rspauth.patch
 URL:		http://jabberd.jabberstudio.org
 BuildRequires:	openssl-devel >= 0.9.6b
-%{?_with_db:BuildRequires:	db-devel >= 4.1.24}
-%{?_with_ldap:BuildRequires:	openldap-devel >= 2.1.0}
-%{?_with_pgsql:BuildRequires:	postgresql-devel}
-%{?_with_mysql:BuildRequires:	mysql-devel}
+%{!?_without_db:BuildRequires:	db-devel >= 4.1.24}
+%{!?_without_ldap:BuildRequires:	openldap-devel >= 2.1.0}
+%{!?_without_pgsql:BuildRequires:	postgresql-devel}
+%{!?_without_mysql:BuildRequires:	mysql-devel}
 BuildRequires:	pam-devel
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 PreReq:		rc-scripts
