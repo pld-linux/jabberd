@@ -23,6 +23,19 @@ Patch2:		%{name}-default_config.patch
 Patch3:		%{name}-sysconfdir.patch
 Patch4:		%{name}-delay_jobs.patch
 Patch5:		%{name}-binary_path.patch
+
+Patch6:		%{name}-nad-cache.patch
+Patch7:		%{name}-patch-sm.patch
+Patch8:		%{name}-patch-sm-mod_announce.patch
+Patch9:		%{name}-patch-io.patch
+Patch10:	%{name}-patch-sm-pkt.patch
+Patch11:	%{name}-patch-pool-cleanup.patch
+Patch12:	%{name}-patch-ssl.patch
+Patch13:	%{name}-patch-s2s-main.patch
+Patch14:	%{name}-patch-util-xhash.patch
+Patch15:	%{name}-patch-scod-mech_plain.patch
+Patch16:	%{name}-util-nad.patch
+
 URL:		http://jabberd.jabberstudio.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -64,6 +77,18 @@ protokó³ XMPP.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+
+%patch6 -p0
+%patch7 -p0
+%patch8 -p0
+%patch9 -p0
+%patch10 -p0
+%patch11 -p0
+%patch12 -p0
+%patch13 -p0
+%patch14 -p0
+%patch15 -p0
+%patch16 -p0
 
 %build
 perl -pi -e 's/^sinclude/dnl sinclude/' configure.in
