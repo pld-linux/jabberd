@@ -6,7 +6,7 @@ diff -durN jabberd-2.0b1.orig/etc/c2s.xml.dist.in jabberd-2.0b1/etc/c2s.xml.dist
         to know the process ID from outside the process (eg for control
         scripts) -->
 -  <pidfile>@localstatedir@/jabberd/pid/c2s.pid</pidfile>
-+  <pidfile>@localstatedir@/run/jabberd/c2s.pid</pidfile>
++  <pidfile>@localstatedir@/run/jabber/c2s.pid</pidfile>
  
    <!-- Router connection configuration -->
    <router>
@@ -105,7 +105,7 @@ diff -durN jabberd-2.0b1.orig/etc/resolver.xml.dist.in jabberd-2.0b1/etc/resolve
         to know the process ID from outside the process (eg for control
         scripts) -->
 -  <pidfile>@localstatedir@/jabberd/pid/resolver.pid</pidfile>
-+  <pidfile>@localstatedir@/run/jabberd/resolver.pid</pidfile>
++  <pidfile>@localstatedir@/run/jabber/resolver.pid</pidfile>
  
    <!-- Router connection configuration -->
    <router>
@@ -126,7 +126,7 @@ diff -durN jabberd-2.0b1.orig/etc/router.xml.dist.in jabberd-2.0b1/etc/router.xm
         to know the process ID from outside the process (eg for control
         scripts) -->
 -  <pidfile>@localstatedir@/jabberd/pid/router.pid</pidfile>
-+  <pidfile>@localstatedir@/run/jabberd/router.pid</pidfile>
++  <pidfile>@localstatedir@/run/jabber/router.pid</pidfile>
  
    <!-- Log configuration - type is either "syslog" or "file" -->
    <log type='syslog'>
@@ -165,7 +165,7 @@ diff -durN jabberd-2.0b1.orig/etc/s2s.xml.dist.in jabberd-2.0b1/etc/s2s.xml.dist
         to know the process ID from outside the process (eg for control
         scripts) -->
 -  <pidfile>@localstatedir@/jabberd/pid/s2s.pid</pidfile>
-+  <pidfile>@localstatedir@/run/jabberd/s2s.pid</pidfile>
++  <pidfile>@localstatedir@/run/jabber/s2s.pid</pidfile>
  
    <!-- Router connection configuration -->
    <router>
@@ -186,7 +186,7 @@ diff -durN jabberd-2.0b1.orig/etc/sm.xml.dist.in jabberd-2.0b1/etc/sm.xml.dist.i
         to know the process ID from outside the process (eg for control
         scripts) -->
 -  <pidfile>@localstatedir@/jabberd/pid/sm.pid</pidfile>
-+  <pidfile>@localstatedir@/run/jabberd/sm.pid</pidfile>
++  <pidfile>@localstatedir@/run/jabber/sm.pid</pidfile>
  
    <!-- Router connection configuration -->
    <router>
