@@ -15,7 +15,7 @@
 # Check that networking is up.
 [ "${NETWORKING}" = "no" ] && exit 0
 
-# Source maas configuration.
+# Source jabber configuration.
 . /etc/sysconfig/jabberd
 
 # See how we were called.

@@ -3,5 +3,5 @@
 # Define jabberd command line options
 JABBERD_FLAGS=""
 
-# Define nice level for maasd 
+# Define nice level for jabberd 
 SERVICE_RUN_NICE_LEVEL="+5"
