@@ -153,7 +153,7 @@ diff -durN jabberd-2.0b1.orig/etc/router.xml.dist.in jabberd-2.0b1/etc/router.xm
      -->
 +    <alias name='jud.localhost' target='jud-linker'/>
 +    <alias name='muc.localhost' target='muc-linker'/>
-+    <alias name='jit.localhost' target='jit-linker'/>
++    <alias name='icq.localhost' target='icq-linker'/>
    </aliases>
  
    <!-- Access control information -->
