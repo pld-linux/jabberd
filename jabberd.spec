@@ -1,3 +1,4 @@
+%define		_snap	20040520
 #
 # Conditional build
 %bcond_without	db	# - don't build db storage and authreg backends
@@ -9,12 +10,13 @@
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.0s2
-Release:	2
+Version:	2.0s3
+Release:	0.%{_snap}.1
 License:	GPL
 Group:		Applications/Communications
-Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
-# Source0-md5:	0f794b00e480a7b4c36d858d4d0095bf
+#Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
+Source0:	jabberd2-%{_snap}.tar.bz2
+# Source0-md5:	8cdb4fe9bb01e2795cdb5e55902af3ec
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-perlscript.patch
@@ -28,6 +30,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 %{?with_db:BuildRequires:	db-devel >= 4.1.24}
 BuildRequires:	gettext-devel
+BuildRequires:	libidn-devel
 BuildRequires:	libtool
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.1.0}
@@ -56,7 +59,7 @@ Nowoczesny, wolnodostêpny serwer Jabbera implementuj±cy najnowszy
 protokó³ XMPP.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q -n jabberd2
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -73,15 +76,14 @@ perl -pi -e 's/^sinclude/dnl sinclude/' configure.in
 %{__automake}
 %configure \
 	--bindir="%{_libdir}/%{name}" \
-	--enable-authreg="anon pipe pam
-		%{?with_db:db}
-		%{?with_ldap:ldap}
-		%{?with_mysql:mysql}
-		%{?with_pgsql:pgsql}" \
-	--enable-storage="fs
-		%{?with_db:db}
-		%{?with_mysql:mysql}
-		%{?with_pgsql:pgsql}" \
+	%{?with_db:--enable-db} \
+	%{!?with_mysql:--disable-mysql} \
+	%{?with_pgsql:--enable-pgsql} \
+	--enable-fs \
+	--enable-anon \
+	--enable-pipe \
+	--enable-pam \
+	%{?with_ldap:--enable-ldap} \
 	%{?debug:--enable-debug}
 
 %{__make}
@@ -138,7 +140,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog INSTALL NEWS PROTOCOL README TODO
+%doc AUTHORS ChangeLog NEWS PROTOCOL README TODO
 %doc tools/{migrate.pl,db-setup.mysql,db-setup.pgsql,pipe-auth.pl}
 %attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabber/*.cfg
 %attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabber/*.xml
