@@ -192,7 +192,7 @@ else
 	echo "Run \"/etc/rc.d/init.d/jabberd start\" to start Jabber server."
 fi
 
-echo "This j2 package has new functionality, please read `AVATARS' file."
+echo "This j2 package has new functionality, please read AVATARS file."
 
 %preun
 if [ "$1" = "0" ]; then
