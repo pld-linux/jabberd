@@ -14,6 +14,7 @@ Patch1:		%{name}-binary_path.patch
 Patch2:		%{name}-daemonize.patch
 Patch3:		%{name}-default_config.patch
 Patch4:		%{name}-sysconfdir.patch
+Patch5:		%{name}-delay_jobs.patch
 URL:		http://jabberd.jabberstudio.org
 BuildRequires:	openssl-devel >= 0.9.6b
 BuildRequires:	db-devel >= 4.1.24
@@ -38,6 +39,7 @@ Modern open source Jabber server, implementing latest XMPP protocol.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 %{__libtoolize}
