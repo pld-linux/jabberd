@@ -45,7 +45,7 @@ start_jabber_service() {
         if [ ! -f "/var/lock/subsys/jabber-${SERVICE}" ]; then
 		
             	msg_starting "jabber-${SERVICE}"
-		SERVICE_FLAGS="`eval echo \\\$${SERVICE}_FLAGS`"
+		eval "SERVICE_FLAGS=\$`echo ${SERVICE}|sed -e's/-/_/'`_FLAGS"
 		
             	daemon /usr/sbin/jabberd -B -U jabber $FLAGS $jabber_FLAGS -c /etc/jabberd/${SERVICE}.xml
         	RETVAL=$?
@@ -129,7 +129,7 @@ case "$1" in
 			if [ -f "${CONFIG}" ] ; then
 				SERVICE=`basename $CONFIG .xml`
 				if [ "$SERVICE" != "jabber" ] ; then
-					RUN_SERVICE="`eval echo \\\$RUN_${SERVICE}`"
+					eval "RUN_SERVICE=\$RUN_`echo ${SERVICE}|sed -e's/-/_/'`"
 					if [ -z "$RUN_SERVICE" ] || is_yes "$RUN_SERVICE" ; then
 						start_jabber_service "$SERVICE"
 					fi
@@ -155,7 +155,7 @@ case "$1" in
   	if [ -z "$2" ] ; then
 		for LOCK in /var/lock/subsys/jabber-* ; do
 			if [ -f "${LOCK}" ] ; then
-				SERVICE=`echo "$LOCK" | awk -F "-" '{print $2}'`
+				SERVICE=`basename "$LOCK" | sed -e's/^jabber-//'`
 				stop_jabber_service "$SERVICE"
 			fi
 		done
