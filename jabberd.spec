@@ -1,4 +1,3 @@
-%include	/usr/lib/rpm/macros.perl
 #
 # Conditional build:
 # _without_db		- don't build db storage and authreg backends
@@ -6,6 +5,7 @@
 # _without_mysql	- don't build mysql storage and authreg backends
 # _without_ldap		- don't build ldap authreg backend
 #
+%include	/usr/lib/rpm/macros.perl
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
@@ -25,15 +25,18 @@ Patch4:		%{name}-sysconfdir.patch
 Patch5:		%{name}-delay_jobs.patch
 Patch6:		%{name}-c2s_crash.patch
 Patch7:		%{name}-digest_md5_rspauth.patch
-URL:		http://jabberd.jabberstudio.org
-BuildRequires:	openssl-devel >= 0.9.6b
+URL:		http://jabberd.jabberstudio.org/
+BuildRequires:	autoconf
+BuildRequires:	automake
 %{!?_without_db:BuildRequires:	db-devel >= 4.1.24}
+BuildRequires:	gettext-devel
+BuildRequires:	libtool
 %{!?_without_mysql:BuildRequires:       mysql-devel}
 %{!?_without_ldap:BuildRequires:	openldap-devel >= 2.1.0}
-%{!?_without_pgsql:BuildRequires:	postgresql-devel}
+BuildRequires:	openssl-devel >= 0.9.6b
 BuildRequires:	pam-devel
+%{!?_without_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpm-perlprov >= 3.0.3-16
-BuildRequires:	gettext-devel
 PreReq:		rc-scripts
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/bin/id
