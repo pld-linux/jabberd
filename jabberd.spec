@@ -14,7 +14,7 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s6
-Release:	3
+Release:	3.1
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
@@ -32,24 +32,25 @@ Patch3:		%{name}-sysconfdir.patch
 Patch4:		%{name}-delay_jobs.patch
 Patch5:		%{name}-binary_path.patch
 Patch6:		http://svn.cmeerw.net/src/jabberd2/sqlite/%{name}-2.0-sqlite.diff
+Patch7:		%{name}-sqlite-example.patch
 # Feature release :)
-Patch7:		http://www.marquard.net/jabber/patches/patch-zzzz-s2s-v5
-Patch8:		http://www.marquard.net/jabber/patches/patch-s2-config-update
-Patch9:		http://www.marquard.net/jabber/patches/patch-sm-shutdown
-Patch10:	http://www.marquard.net/jabber/patches/patch-reconnect
-Patch11:	http://www.marquard.net/jabber/patches/patch-db-cleanup
-Patch12:	http://www.marquard.net/jabber/patches/patch-sm-db-fixup
-Patch13:	http://www.marquard.net/jabber/patches/patch-empty-jid-v2
-Patch14:	http://www.marquard.net/jabber/patches/patch-mod_session
-Patch15:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-85
-Patch16:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-86
-Patch17:	http://www.marquard.net/jabber/patches/patch-sx-stream-err
-Patch18:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-88
+Patch8:		http://www.marquard.net/jabber/patches/patch-zzzz-s2s-v5
+Patch9:		http://www.marquard.net/jabber/patches/patch-s2-config-update
+Patch10:	http://www.marquard.net/jabber/patches/patch-sm-shutdown
+Patch11:	http://www.marquard.net/jabber/patches/patch-reconnect
+Patch12:	http://www.marquard.net/jabber/patches/patch-db-cleanup
+Patch13:	http://www.marquard.net/jabber/patches/patch-sm-db-fixup
+Patch14:	http://www.marquard.net/jabber/patches/patch-empty-jid-v2
+Patch15:	http://www.marquard.net/jabber/patches/patch-mod_session
+Patch16:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-85
+Patch17:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-86
+Patch18:	http://www.marquard.net/jabber/patches/patch-sx-stream-err
+Patch19:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-88
 #bcond amp
 #original patch from http://neonux.org/jabberd2/mod_amp.patch
-Patch19:	%{name}-mod_amp.patch
+Patch20:	%{name}-mod_amp.patch
 #bcond oq
-Patch20:	http://www.marquard.net/jabber/patches/patch-sm-offline-quota
+Patch21:	http://www.marquard.net/jabber/patches/patch-sm-offline-quota
 #bcond bxmpp
 Patch21:	http://www.marquard.net/jabber/patches/patch-flash-v2
 URL:		http://jabberd.jabberstudio.org/
@@ -93,11 +94,11 @@ protokó³ XMPP.
 #SQLite
 %if %{with sqlite}
 %patch6 -p1
+%patch7 -p1
 install %{SOURCE3} tools/
 install %{SOURCE4} sm/
 %endif
 #
-%patch7 -p0
 %patch8 -p0
 %patch9 -p0
 %patch10 -p0
@@ -109,18 +110,19 @@ install %{SOURCE4} sm/
 %patch16 -p0
 %patch17 -p0
 %patch18 -p0
+%patch19 -p0
 
 %if %{with amp}
 install %{SOURCE5} sm/
-%patch19 -p1
+%patch20 -p1
 %endif
 
 %if %{with oq}
-%patch20 -p0
+%patch21 -p0
 %endif
 
 %if %{with bxmpp}
-%patch21 -p0
+%patch22 -p0
 %endif
 
 %build
