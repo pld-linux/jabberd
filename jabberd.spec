@@ -10,6 +10,7 @@
 # and allows offline storage (queuing) of subscription requests and/or messages
 # to be disabled
 %bcond_with	amp	# - Advanced Message Processing (JEP-0079) implementation
+			#  (make package unstable!)
 %bcond_with	bxmpp	# - patches c2s to allow connections from Flash clients which don't use proper XMPP
 %bcond_with	avatars	# - add support to storage avatars
 
