@@ -1,0 +1,97 @@
+--- jabberd-cvs/sm/Makefile.am  2004-12-15 12:09:59.000000000 +0100
++++ src-jabberd/sm/Makefile.am  2004-12-29 19:12:05.131008768 +0100
+@@ -38,7 +38,8 @@
+              mod_iq_time.c \
+              mod_iq_vcard.c \
+              mod_iq_version.c \
+-             mod_template_roster.c
++             mod_template_roster.c \
++             mod_amp.c
+
+ sm_LDADD = $(top_builddir)/sx/libsx.la \
+            $(top_builddir)/scod/libscod.la \
+
+
+--- jabberd-cvs/sm/mm.c 2004-12-15 12:09:59.000000000 +0100
++++ src-jabberd/sm/mm.c 2004-12-29 18:57:42.792104208 +0100
+ /* these functions implement a multiplexor to get calls to the correct module
+@@ -53,6 +53,7 @@
+ extern int iq_vcard_init(mod_instance_t);
+ extern int iq_version_init(mod_instance_t);
+ extern int template_roster_init(mod_instance_t);
++extern int amp_init(mod_instance_t);
+
+ char *module_names[] = {
+     "active",
+@@ -75,6 +76,7 @@
+     "iq-vcard",
+     "iq-version",
+     "template-roster",
++    "amp",
+     NULL
+ };
+
+@@ -99,6 +101,7 @@
+     iq_vcard_init,
+     iq_version_init,
+     template_roster_init,
++    amp_init,
+     NULL
+ };
+
+
+--- jabberd-cvs/sm/sm.h 2004-12-15 12:10:00.000000000 +0100
++++ src-jabberd/sm/sm.h 2004-12-29 18:58:10.425903232 +0100
+@@ -73,6 +73,16 @@
+ #define uri_DISCO_INFO  "http://jabber.org/protocol/disco#info"
+ #define uri_VACATION    "http://jabber.org/protocol/vacation"
+
++#define uri_AMP                         "http://jabber.org/protocol/amp"
++#define uri_AMP_ERRORS                  "http://jabber.org/protocol/amp#errors"
++#define uri_AMP_ACTION_DROP             "http://jabber.org/protocol/amp?action=drop"
++#define uri_AMP_ACTION_ERROR            "http://jabber.org/protocol/amp?action=error"
++#define uri_AMP_ACTION_NOTIFY           "http://jabber.org/protocol/amp?action=notify"
++#define uri_AMP_CONDITION_DELIVER       "http://jabber.org/protocol/amp?condition=deliver"
++#define uri_AMP_CONDITION_EXPIREAT      "http://jabber.org/protocol/amp?condition=expire-at"
++#define uri_AMP_CONDITION_MATCHRESOURCE "http://jabber.org/protocol/amp?condition=match-resource"
++
++
+ /* indexed known namespace values */
+ #define ns_AUTH         (1)
+ #define ns_REGISTER     (2)
+@@ -95,5 +104,15 @@
+ #define ns_DISCO_INFO   (19)
+ #define ns_VACATION     (20)
+
++#define ns_AMP                          (21)
++#define ns_AMP_ERRORS                   (22)
++#define ns_AMP_ACTION_DROP              (23)
++#define ns_AMP_ACTION_ERROR             (24)
++#define ns_AMP_ACTION_NOTIFY            (25)
++#define ns_AMP_CONDITION_DELIVER        (26)
++#define ns_AMP_CONDITION_EXPIREAT       (27)
++#define ns_AMP_CONDITION_MATCHRESOURCE  (28)
++
++
+
+
+--- jabberd-cvs/sm/sess.c       2004-12-15 12:10:00.000000000 +0100
++++ src-jabberd/sm/sess.c       2004-12-29 18:56:38.000000000 +0100
+@@ -206,3 +206,16 @@
+
+     return NULL;
+ }
++
++/** match a session by exact resource */
++sess_t sess_match_exact(user_t user, char *resource) {
++    sess_t sess;
++
++    for(sess = user->sessions; sess != NULL; sess = sess->next) {
++        /* exact matches */
++        if(strcmp(sess->jid->resource, resource) == 0)
++            return sess;
++    }
++
++    return NULL;
++}
+
