@@ -1,8 +1,11 @@
 #!/bin/sh
 #
-# chkconfig:    345 99 01
+# jabberd	Jabber/XMPP server
 #
-# description:	Starts and stops Jabberd 2.0 Jabber server
+# chkconfig:	345 99 01
+#
+# description:	Modern open source Jabber server, implementing\
+#		latest XMPP protocol.
 #
 
 
