@@ -5,6 +5,7 @@ Release:	0.b1.1
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}b1.tar.gz
+# Source0-md5:	845d023346743b997201873d938fb8f7
 Patch0:		%{name}-perlscript.patch
 URL:		http://jabberd.jabberstudio.org
 BuildRequires:	openssl-devel >= 0.9.6b
