@@ -45,6 +45,7 @@ case "$1" in
         ;;
   restart)
         $0 stop
+	run_cmd "Jabberd (5 sec. timeout)" sleep 5
 	$0 start
         ;;
   reload)
