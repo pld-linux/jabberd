@@ -47,8 +47,8 @@ start_jabber_service() {
             	msg_starting "jabber-${SERVICE}"
 		SERVICE_FLAGS="`eval echo \\\$${SERVICE}_FLAGS`"
 		
-		if [ -x /etc/jabber/${SERVICE} ] ; then
-			EXECUTABLE=/etc/jabber/${SERVICE}
+		EXECUTABLE=`awk '/<!--run: [^ \t]+ -->/ { print $2 }' /etc/jabber/${SERVICE}.xml`
+		if [ -s "$EXECUTABLE" ] ; then
 			FLAGS=""
 		else
 			EXECUTABLE=/usr/sbin/jabberd
