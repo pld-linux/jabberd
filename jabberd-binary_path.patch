@@ -12,7 +12,7 @@ diff -dur -x '*.orig' jabberd-2.0s2.orig/tools/Makefile.am jabberd-2.0s2/tools/M
 diff -dur -x '*.orig' jabberd-2.0s2.orig/tools/jabberd.in jabberd-2.0s2/tools/jabberd.in
 --- jabberd-2.0s2.orig/tools/jabberd.in	2004-02-10 13:28:03.498104784 +0100
 +++ jabberd-2.0s2/tools/jabberd.in	2004-02-10 13:35:41.653454584 +0100
-@@ -9,12 +9,12 @@
+@@ -9,14 +9,14 @@
  
  use strict;
  use Getopt::Std;
@@ -20,8 +20,9 @@ diff -dur -x '*.orig' jabberd-2.0s2.orig/tools/jabberd.in jabberd-2.0s2/tools/ja
  use FileHandle;
  use IPC::Open3;
  use IO::Select;
- use Proc::Daemon;
- 
+ use POSIX;
+ use POSIX qw(setsid);
+
 +my $Bin="@libdir@";
  #-----------------------------------------------------------------------------
  # Define some initial variables and default them as needed.

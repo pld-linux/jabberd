@@ -1,10 +1,10 @@
 diff -durN jabberd-2.0b1.orig/tools/jabberd.in jabberd-2.0b1/tools/jabberd.in
 --- jabberd-2.0b1.orig/tools/jabberd.in	Wed Sep 17 07:12:47 2003
 +++ jabberd-2.0b1/tools/jabberd.in	Wed Sep 17 07:13:41 2003
-@@ -140,6 +140,7 @@
+@@ -132,6 +132,7 @@
  foreach my $job (@programs)
  {
-     &LaunchJob($job->[0],$job->[1]);
+     &LaunchJob($job->[0],$job->[1],$job->[2]);
 +    sleep(1);
  }
  
