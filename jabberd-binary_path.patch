@@ -1,6 +1,17 @@
-diff -durN jabberd-2.0b1.orig/tools/jabberd.in jabberd-2.0b1/tools/jabberd.in
---- jabberd-2.0b1.orig/tools/jabberd.in	Fri Sep 12 13:39:38 2003
-+++ jabberd-2.0b1/tools/jabberd.in	Fri Sep 12 13:40:03 2003
+diff -dur -x '*.orig' jabberd-2.0s2.orig/tools/Makefile.am jabberd-2.0s2/tools/Makefile.am
+--- jabberd-2.0s2.orig/tools/Makefile.am	2003-12-16 02:01:34.000000000 +0100
++++ jabberd-2.0s2/tools/Makefile.am	2004-02-10 13:36:11.462922856 +0100
+@@ -3,6 +3,7 @@
+ 
+ edit = sed \
+ 	-e 's,@sysconfdir\@,$(sysconfdir),g' \
++	-e 's,@libdir\@,$(libdir)/jabberd,g' \
+ 	-e 's,@VERSION\@,$(VERSION),g'
+ 
+ $(bin_SCRIPTS): $(EXTRA_DIST)
+diff -dur -x '*.orig' jabberd-2.0s2.orig/tools/jabberd.in jabberd-2.0s2/tools/jabberd.in
+--- jabberd-2.0s2.orig/tools/jabberd.in	2004-02-10 13:28:03.498104784 +0100
++++ jabberd-2.0s2/tools/jabberd.in	2004-02-10 13:35:41.653454584 +0100
 @@ -9,12 +9,12 @@
  
  use strict;
@@ -9,9 +20,9 @@ diff -durN jabberd-2.0b1.orig/tools/jabberd.in jabberd-2.0b1/tools/jabberd.in
  use FileHandle;
  use IPC::Open3;
  use IO::Select;
+ use Proc::Daemon;
  
- 
-+my $Bin="/usr/lib/jabberd";
++my $Bin="@libdir@";
  #-----------------------------------------------------------------------------
  # Define some initial variables and default them as needed.
  #-----------------------------------------------------------------------------
