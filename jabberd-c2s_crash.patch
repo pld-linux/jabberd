@@ -1,0 +1,12 @@
+diff -durN jabberd-2.0b1.orig/c2s/c2s.c jabberd-2.0b1/c2s/c2s.c
+--- jabberd-2.0b1.orig/c2s/c2s.c	Fri Aug 29 12:29:41 2003
++++ jabberd-2.0b1/c2s/c2s.c	Thu Sep 18 11:32:46 2003
+@@ -112,7 +112,7 @@
+             if(errno == EWOULDBLOCK || errno == EINTR || errno == EAGAIN)
+                 return 0;
+             
+-            if(s->state >= state_OPEN)
++            if(s->state >= state_OPEN && sess->jid != NULL)
+                 log_write(sess->c2s->log, LOG_NOTICE, "[%d] [%s] write error: %s (%d)", sess->fd, jid_full(sess->jid), strerror(errno), errno);
+             else
+                 log_write(sess->c2s->log, LOG_NOTICE, "[%d] [%s. port=%d] write error: %s (%d)", sess->fd, sess->ip, sess->port, strerror(errno), errno);
