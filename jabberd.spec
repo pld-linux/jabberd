@@ -95,6 +95,7 @@ protokó³ XMPP.
 %patch6 -p1
 install %{SOURCE3} tools/
 install %{SOURCE4} sm/
+%endif
 #
 %patch7 -p0
 %patch8 -p0
@@ -160,7 +161,7 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ -f /etc/jabber/secret ] ; then
+if ! [ -f /etc/jabber/secret ] ; then
 	SECRET=`cat /etc/jabber/secret`
 	if [ -n "$SECRET" ] ; then
 		echo "Updating component authentication secret in Jabberd config files..."
