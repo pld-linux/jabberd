@@ -1,0 +1,49 @@
+--- s2s/main.c.orig	Wed Dec 29 18:57:42 2004
++++ s2s/main.c	Wed Dec 29 19:00:48 2004
+@@ -177,7 +177,7 @@
+               dialback_time = (time_t) xhash_get(conn->states_time, rkey);
+ 
+               if(now > dialback_time + s2s->check_queue) {
+-                 log_write(s2s->log, LOG_NOTICE, "dialback for %s route %s timed out", direction, rkey);
++                 log_write(s2s->log, LOG_NOTICE, "[%d] [%s, port=%d] dialback for %s route '%s' timed out", conn->fd, conn->ip, conn->port, direction, rkey);
+ 
+                  xhash_zap(conn->states, rkey);
+                  xhash_zap(conn->states_time, rkey);
+@@ -255,7 +255,7 @@
+ 
+                 /* connect timeout check */
+                 if(!conn->online && now > conn->init_time + s2s->check_queue) {
+-                    log_write(s2s->log, LOG_NOTICE, "connection to %s timed out", domain);
++                    log_write(s2s->log, LOG_NOTICE, "[%d] [%s, port=%d] connection to %s timed out", conn->fd, conn->ip, conn->port, domain);
+ 
+                     /* bounce queue */
+                     out_bounce_queue(s2s, domain, stanza_err_REMOTE_SERVER_TIMEOUT);
+@@ -448,7 +448,7 @@
+     _s2s_config_expand(s2s);
+ 
+     s2s->log = log_new(s2s->log_type, s2s->log_ident, s2s->log_facility);
+-    log_write(s2s->log, LOG_NOTICE, "starting up");
++    log_write(s2s->log, LOG_NOTICE, "starting up (interval=%i, queue=%i, keepalive=%i, idle=%i)", s2s->check_interval, s2s->check_queue, s2s->check_keepalive, s2s->check_idle);
+ 
+     _s2s_pidfile(s2s);
+ 
+--- s2s/out.c.orig	Wed Dec 29 19:46:15 2004
++++ s2s/out.c	Wed Dec 29 19:46:21 2004
+@@ -748,7 +748,7 @@
+     }
+ 
+     /* invalid */
+-    log_write(out->s2s->log, LOG_NOTICE, "outgoing route '%s' is now invalid; destination=%s, port %d", rkey, out->ip, out->port);
++    log_write(out->s2s->log, LOG_NOTICE, "[%d] [%s, port=%d] outgoing route '%s' is now invalid", out->fd, out->ip, out->port, rkey);
+ 
+     /* close connection */
+     log_write(out->s2s->log, LOG_NOTICE, "[%d] [%s, port=%d] closing connection", out->fd, out->ip, out->port);
+@@ -817,7 +817,7 @@
+         log_write(in->s2s->log, LOG_NOTICE, "[%d] [%s, port=%d] incoming route '%s' is now valid%s", in->fd, in->ip, in->port, rkey, in->s->ssf ? ", SSL negotiated" : "");
+         valid = 1;
+     } else {
+-        log_write(in->s2s->log, LOG_NOTICE, "incoming route '%s' is now invalid; source=%s, port %d", rkey, in->ip, in->port);
++        log_write(in->s2s->log, LOG_NOTICE, "[%d] [%s, port=%d] incoming route '%s' is now invalid", in->fd, in->ip, in->port, rkey);
+         valid = 0;
+     }
+ 
