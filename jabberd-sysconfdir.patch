@@ -1,14 +1,12 @@
-diff -durN jabberd-2.0b1.orig/configure.in jabberd-2.0b1/configure.in
---- jabberd-2.0b1.orig/configure.in	Wed Sep  3 02:52:08 2003
-+++ jabberd-2.0b1/configure.in	Tue Sep 16 11:50:30 2003
-@@ -381,8 +381,8 @@
- AC_SUBST(SX_DEBUG)
+diff -Nur jabberd2/configure.in jabberd2-sysconf/configure.in
+--- jabberd2/configure.in	2004-04-16 07:20:48.000000000 +0200
++++ jabberd2-sysconf/configure.in	2004-06-17 10:29:42.400598976 +0200
+@@ -681,7 +681,7 @@
+ dnl
  
- 
--dnl store our config under $(sysconfdir)/jabberd
+ dnl put our config in its own subdir
 -sysconfdir="$sysconfdir/jabberd"
-+dnl store our config under $(sysconfdir)/jabber
 +sysconfdir="$sysconfdir/jabber"
  
- dnl Create the makefiles
+ dnl done!
  AC_OUTPUT(Makefile \
