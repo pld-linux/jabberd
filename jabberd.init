@@ -26,7 +26,7 @@ start_main_jabberd() {
 	# Check if the service is already running?
         if [ ! -f /var/lock/subsys/jabberd ] ; then
             	msg_starting jabberd
-            	daemon su -s /bin/sh -c "\"exec /usr/sbin/jabberd $JABBERD_FLAGS $jabber_FLAGS -c /etc/jabberd/jabber.xml &\"" jabber -
+            	daemon /usr/sbin/jabberd -B -U jabber $JABBERD_FLAGS $jabber_FLAGS -c /etc/jabberd/jabber.xml
         	RETVAL=$?
 		if [ $RETVAL -eq 0 ] ; then 
 			touch /var/lock/subsys/jabberd
@@ -47,7 +47,7 @@ start_jabber_service() {
             	msg_starting "jabber-${SERVICE}"
 		SERVICE_FLAGS="`eval echo \\\$${SERVICE}_FLAGS`"
 		
-            	daemon su -s /bin/sh -c "\"exec /usr/sbin/jabberd $FLAGS $jabber_FLAGS -c /etc/jabberd/${SERVICE}.xml &\"" jabber -
+            	daemon /usr/sbin/jabberd -B -U jabber $FLAGS $jabber_FLAGS -c /etc/jabberd/${SERVICE}.xml
         	RETVAL=$?
 		if [ $RETVAL -eq 0 ] ; then 
 			touch /var/lock/subsys/jabber-${SERVICE}
@@ -185,8 +185,9 @@ case "$1" in
 	done
 	;;
   restart|reload)
-	$0 stop
-	$0 start
+  	shift
+	$0 stop $*
+	$0 start $*
 	;;
   *)
         echo "Usage: $0 {start|stop|restart|status} [service...]"
