@@ -12,7 +12,7 @@
 %bcond_with	bxmpp	# - patches c2s to allow connections from Flash clients which don't use proper XMPP
 %bcond_with	avatars	# - add support to storage avatars
 
-%define		_snap	20050321
+%define		_snap	20050323
 %include	/usr/lib/rpm/macros.perl
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
@@ -22,8 +22,8 @@ Release:	0.1
 Epoch:		1
 License:	GPL
 Group:		Applications/Communications
-Source0:	%{name}-%{version}-%{_snap}.tbz2
-# Source0-md5:	c14c839b931c15bedff9c81ee6a5c5c2
+Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}%{_snap}.tar.gz
+# Source0-md5:	65fbe3c7ccd783e88df477eea65323fd
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 #bcond amp
