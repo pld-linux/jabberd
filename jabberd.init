@@ -1,204 +1,73 @@
 #!/bin/sh
 #
-# jabberd	This shell script takes care of starting and stopping
-#		jabberd (distributed messaging and presence system server).
-#		This script also handles any jabber services, which have
-#		their config in /etc/jabberd/*.xml files. It makes sure
-#		jabberd is running, when the services are started.
+# chkconfig:    345 70 30
 #
-# chkconfig:	345 80 10
-# description:	jabberd is the Jabber system server
+# description:	Starts and stops Jabberd 2.0 Jabber server
+#
+# $Id$
 
-# Source function library.
+
+# Source function library
 . /etc/rc.d/init.d/functions
 
-# Source networking configuration.
-. /etc/sysconfig/network
+# Get service config - may override defaults
+[ -f /etc/sysconfig/jabberd ] && . /etc/sysconfig/jabberd
 
-# Check that networking is up.
-if is_yes "${NETWORKING}"; then
-	if [ ! -f /var/lock/subsys/network -a "$1" != stop -a "$1" != status ]; then
-		msg_network_down jabberd
-		exit 1
-	fi
-else
-	exit 0
-fi
-
-# Source jabber configuration.
-. /etc/sysconfig/jabberd
-
-start_main_jabberd() {
-
-	# Check if the service is already running?
-	if [ ! -f /var/lock/subsys/jabberd ]; then
-		msg_starting jabberd
-		daemon /usr/sbin/jabberd -B -U jabber $JABBERD_FLAGS $jabber_FLAGS -c /etc/jabberd/jabber.xml
-		RETVAL=$?
-		if [ $RETVAL -eq 0 ]; then 
-			touch /var/lock/subsys/jabberd
-			ln -sf /var/lib/jabber/jabber.pid /var/run/jabberd.pid
-		fi
-	else
-		msg_already_running jabberd
-	fi
-}
-
-start_jabber_service() {
-	
-	SERVICE=$1
-	# Check if the service is already running?
-	if [ ! -f "/var/lock/subsys/jabber-${SERVICE}" ]; then
-		
-		msg_starting "jabber-${SERVICE}"
-		eval "SERVICE_FLAGS=\$`echo ${SERVICE}|sed -e's/-/_/'`_FLAGS"
-		
-		daemon /usr/sbin/jabberd -B -U jabber $FLAGS $jabber_FLAGS -c /etc/jabberd/${SERVICE}.xml
-		RET=$?
-		[ $RETVAL -ne 0 ] && RETVAL=$RET
-		if [ $RETVAL -eq 0 ]; then 
-			touch /var/lock/subsys/jabber-${SERVICE}
-			ln -fs /var/lib/jabber/${SERVICE}.pid /var/run/jabber-${SERVICE}.pid
-		fi
-	else
-		msg_already_running "jabber-${SERVICE}"
-	fi
-}
-
-
-stop_main_jabberd() {
-	if [ -f /var/lock/subsys/jabberd ]; then
-		msg_stopping jabberd
-		killproc jabberd
-		rm -f /var/lock/subsys/jabberd /var/run/jabberd.pid /var/lib/jabber/jabber.pid
-	else
-		msg_not_running jabberd
-	fi
-}
-
-stop_jabber_service() {
-
-	SERVICE=$1
-	if [ -f /var/lock/subsys/jabber-$SERVICE ]; then
-		msg_stopping "jabber-$SERVICE"
-
-		# this should kill proper daemon, whatever name it has 
-		# (using its pid file)
-		killproc jabber-$SERVICE
-		rm -f /var/lock/subsys/jabber-$SERVICE /var/run/jabber-$SERVICE.pid /var/lib/jabber/$SERVICE.pid
-	else
-		msg_not_running "jabber-$SERVICE"
-	fi
-}
-
-# This is different from status(), as different services use the same command name
-# so only *.pid files can be used
-jabber_status(){
-	# Test syntax.
-	if [ $# = 0 ]; then
-		msg_usage "$0 status {subsys} [{service}]"
-		return 4
-	fi
-
-	service=$1
-
-	# Try "/var/run/*.pid" files
-	if [ -f /var/run/$service.pid ]; then
-		pid=`head -1 /var/run/$service.pid`
-		if [ -n "$pid" ]; then
-			if ps -p "$pid" >/dev/null 2>&1 ; then
-				nls "%s (pid %s) is running..." "$service" "$pid"
-				return 0
-			else
-				nls "%s dead but pid file exists" "$service"
-				return 1
-			fi
-		fi
-	fi
-	# See if /var/lock/service/$subsys exists
-	if [ -f /var/lock/service/$subsys ]; then
-		nls "%s dead but service locked" "$service"
-		return 2
-	fi
-	nls "%s is stopped" "$service"
-	return 3
-}
-
-RETVAL=0
 # See how we were called.
 case "$1" in
   start)
-  	if [ -z "$2" ]; then
-		start_main_jabberd
-		for CONFIG in /etc/jabberd/*.xml ; do
-			if [ -f "${CONFIG}" ]; then
-				SERVICE=`basename $CONFIG .xml`
-				if [ "$SERVICE" != "jabber" ]; then
-					eval "RUN_SERVICE=\$RUN_`echo ${SERVICE}|sed -e's/-/_/'`"
-					if [ -z "$RUN_SERVICE" ] || is_yes "$RUN_SERVICE" ; then
-						start_jabber_service "$SERVICE"
-					fi
-				fi
-			fi
-		done
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/jabberd ]; then
+		msg_starting jabberd
+		daemon jabberd
+		RETVAL=$?
+		if [ $RETVAL -eq 0 ]; then
+			touch /var/lock/subsys/jabberd
+		fi
 	else
-		shift
-		for SERVICE in $* ; do
-			if [ "$SERVICE" = "jabber" ]; then
-				start_main_jabberd
-			elif [ -f /etc/jabberd/${SERVICE}.xml ]; then
-				start_jabber_service $SERVICE
-			else
-				show "%s is missing" "/etc/jabberd/${SERVICE}.xml"
-				RETVAL=6
-				fail
-			fi
-		done
+		msg_already_running jabberd
+		exit 1
+	fi
+        ;;
+  stop)
+        # Stop daemons.
+	if [ -f /var/lock/subsys/jabberd ]; then
+		msg_stopping jabberd
+		killproc jabberd
+		RETVAL=$?
+		rm -f /var/lock/subsys/jabberd
+	else
+		msg_not_running jabberd
+		exit 1
+	fi	
+        ;;
+  restart)
+        $0 stop
+	$0 start
+        ;;
+  reload)
+	if [ -f /var/lock/subsys/jabberd ]; then
+		msg_reloading jabberd
+		killproc jabberd -HUP
+		RETVAL=$?
+	else
+		msg_not_running jabberd
+		RETVAL=1
 	fi
 	;;
-  stop)
-  	if [ -z "$2" ]; then
-		for LOCK in /var/lock/subsys/jabber-* ; do
-			if [ -f "${LOCK}" ]; then
-				SERVICE=`basename "$LOCK" | sed -e's/^jabber-//'`
-				stop_jabber_service "$SERVICE"
-			fi
-		done
-		stop_main_jabberd
-	else
-		SERVICE=$2
-		if [ "$SERVICE" = "jabber" ]; then
-			stop_main_jabberd
-		elif [ -f /etc/jabberd/${SERVICE}.xml ]; then
-			stop_jabber_service $SERVICE
-		else
-			show "%s is missing" "/etc/jabberd/${SERVICE}.xml"
-			fail
-		fi
-	fi
-  	
+  force-reload)
+	$0 stop && $0 start
 	;;
   status)
 	status jabberd
-	for CONFIG in /etc/jabberd/*.xml ; do
-		if [ -f "${CONFIG}" ]; then
-			SERVICE=`basename $CONFIG .xml`
-			if [ "$SERVICE" != "jabber" ]; then
-				jabber_status jabber-${SERVICE}
-			fi
-		fi
-	done
-	exit $?
-	;;
-  restart|force-reload)
-  	shift
-	$0 stop $*
-	$0 start $*
-	exit $?
-	;;
+	RETVAL=$?
+        ;;
   *)
-	msg_usage "$0 {start|stop|restart|force-reload|status} [service...]"
-	exit 3
+	msg_usage "$0 {start|stop|status|restart|reload|force-reload}"
+        exit 1
 esac
 
 exit $RETVAL
+
+# This must be last line !
+# vi:syntax=sh:tw=78:ts=8:sw=4
