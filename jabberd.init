@@ -163,7 +163,7 @@ case "$1" in
 	else
 		SERVICE=$2
 		if [ "$SERVICE" = "jabber" ] ; then
-			$0 stop
+			stop_main_jabberd
 		elif [ -f /etc/jabberd/${SERVICE}.xml ] ; then
 			stop_jabber_service $SERVICE
 		else
