@@ -1,0 +1,34 @@
+--- jabberd/sm/mod_iq_vcard.c		2004-11-13 17:08:32.000000000 +0100
++++ jabberd/sm/mod_iq_vcard.c		2005-01-26 18:34:54.000000000 +0100
+@@ -54,14 +54,19 @@
+     "ADR/CTRY",     "adr-country",
+     "ORG/ORGNAME",  "org-orgname",
+     "ORG/ORGUNIT",  "org-orgunit",
++    /* ALTER TABLE `vcard` ADD `photo-type` TEXT, ADD `photo-binval` TEXT; */
++    "PHOTO/TYPE",   "photo-type",
++    "PHOTO/BINVAL", "photo-binval",
+     NULL,           NULL
+ };
+ 
++const max_vcard_field_length = 8096;
++
+ static os_t _iq_vcard_to_object(pkt_t pkt) {
+     os_t os;
+     os_object_t o;
+     int i = 0, elem;
+-    char *vkey, *dkey, *vskey, ekey[10], cdata[4096];
++    char *vkey, *dkey, *vskey, ekey[10], cdata[max_vcard_field_length];
+ 
+     log_debug(ZONE, "building object from packet");
+ 
+@@ -92,8 +97,8 @@
+ 
+         log_debug(ZONE, "extracted vcard key %s val '%.*s' for db key %s", vkey, NAD_CDATA_L(pkt->nad, elem), NAD_CDATA(pkt->nad, elem), dkey);
+ 
+-        snprintf(cdata, 4096, "%.*s", NAD_CDATA_L(pkt->nad, elem), NAD_CDATA(pkt->nad, elem));
+-        cdata[4095] = '\0';
++        snprintf(cdata, max_vcard_field_length, "%.*s", NAD_CDATA_L(pkt->nad, elem), NAD_CDATA(pkt->nad, elem));
++        cdata[max_vcard_field_length - 1] = '\0';
+         os_object_put(o, dkey, cdata, os_type_STRING);
+     }
+ 
