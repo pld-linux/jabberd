@@ -1,4 +1,8 @@
 #
+# TODO:
+# add bcond avatars with avatars patch, this feature will be released
+# at jabberd-2.1
+#
 # Conditional build
 %bcond_without	db	# - don't build db storage and authreg backends
 %bcond_without	pgsql	# - don't build PostgreSQL storage and authreg backends
