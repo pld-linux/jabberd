@@ -87,6 +87,8 @@ Requires:	jabber-common
 Obsoletes:	jabber
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		specflags	-fno-strict-aliasing
+
 %description
 Modern open source Jabber server, implementing latest XMPP protocol.
 
@@ -146,7 +148,6 @@ install %{SOURCE4} sm/
 
 %build
 #http://j2.openaether.org/bugzilla/show_bug.cgi?id=17
-export CFLAGS="-fno-strict-aliasing"
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
