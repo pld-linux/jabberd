@@ -1,16 +1,16 @@
 %include	/usr/lib/rpm/macros.perl
 #
 # Conditional build:
-# _without_db		- build db storage and authreg backends
-# _without_pgsql	- build pgsql storage and authreg backends
-# _without_mysql	- build mysql storage and authreg backends
-# _without_ldap		- build ldap authreg backend
+# _without_db		- don't build db storage and authreg backends
+# _without_pgsql	- don't build pgsql storage and authreg backends
+# _without_mysql	- don't build mysql storage and authreg backends
+# _without_ldap		- don't build ldap authreg backend
 #
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0
-Release:	0.b1.1
+Release:	0.b1.2
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}b1.tar.gz
@@ -28,9 +28,9 @@ Patch7:		%{name}-digest_md5_rspauth.patch
 URL:		http://jabberd.jabberstudio.org
 BuildRequires:	openssl-devel >= 0.9.6b
 %{!?_without_db:BuildRequires:	db-devel >= 4.1.24}
+%{!?_without_mysql:BuildRequires:       mysql-devel}
 %{!?_without_ldap:BuildRequires:	openldap-devel >= 2.1.0}
 %{!?_without_pgsql:BuildRequires:	postgresql-devel}
-%{!?_without_mysql:BuildRequires:	mysql-devel}
 BuildRequires:	pam-devel
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 PreReq:		rc-scripts
