@@ -137,7 +137,8 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog INSTALL NEWS README TODO tools/db-setup.mysql tools/db-setup.pgsql tools/pipe-auth.pl
+%doc AUTHORS ChangeLog INSTALL NEWS PROTOCOL README TODO
+%doc tools/{migrate.pl,db-setup.mysql,db-setup.pgsql,pipe-auth.pl}
 %attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabber/*.cfg
 %attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabber/*.xml
 %dir %{_sysconfdir}/jabber/templates
