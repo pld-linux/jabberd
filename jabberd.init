@@ -54,7 +54,8 @@ start_jabber_service() {
 		eval "SERVICE_FLAGS=\$`echo ${SERVICE}|sed -e's/-/_/'`_FLAGS"
 		
 		daemon /usr/sbin/jabberd -B -U jabber $FLAGS $jabber_FLAGS -c /etc/jabberd/${SERVICE}.xml
-		[ $RETVAL -ne 0 ] && RETVAL=$?
+		RET=$?
+		[ $RETVAL -ne 0 ] && RETVAL=$RET
 		if [ $RETVAL -eq 0 ] ; then 
 			touch /var/lock/subsys/jabber-${SERVICE}
 			ln -fs /var/lib/jabber/${SERVICE}.pid /var/run/jabber-${SERVICE}.pid
