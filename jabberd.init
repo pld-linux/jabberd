@@ -3,7 +3,7 @@
 # jabberd       This shell script takes care of starting and stopping
 #               jabberd (distributed messaging and presence system server).
 #		This script also handles any jabber services, which have
-#		their config in /etc/jabber/*.xml files. It makes sure
+#		their config in /etc/jabberd/*.xml files. It makes sure
 #		jabberd is running, when the services are started.
 #
 # chkconfig:	345 80 10
@@ -26,7 +26,7 @@ start_main_jabberd() {
 	# Check if the service is already running?
         if [ ! -f /var/lock/subsys/jabberd ] ; then
             	msg_starting jabberd
-            	daemon su -s /bin/sh -c "\"exec /usr/sbin/jabberd $JABBERD_FLAGS $jabber_FLAGS -c /etc/jabber/jabber.xml &\"" jabber -
+            	daemon su -s /bin/sh -c "\"exec /usr/sbin/jabberd $JABBERD_FLAGS $jabber_FLAGS -c /etc/jabberd/jabber.xml &\"" jabber -
         	RETVAL=$?
 		if [ $RETVAL -eq 0 ] ; then 
 			touch /var/lock/subsys/jabberd
@@ -47,15 +47,7 @@ start_jabber_service() {
             	msg_starting "jabber-${SERVICE}"
 		SERVICE_FLAGS="`eval echo \\\$${SERVICE}_FLAGS`"
 		
-		EXECUTABLE=`awk '/<!--run: [^ \t]+ -->/ { print $2 }' /etc/jabber/${SERVICE}.xml`
-		if [ -s "$EXECUTABLE" ] ; then
-			FLAGS=""
-		else
-			EXECUTABLE=/usr/sbin/jabberd
-			FLAGS="$JABBERD_FLAGS -c /etc/jabber/${SERVICE}.xml"
-		fi
-		
-            	daemon su -s /bin/sh -c "\"exec ${EXECUTABLE} $FLAGS $jabber_FLAGS &\"" jabber -
+            	daemon su -s /bin/sh -c "\"exec /usr/sbin/jabberd $FLAGS $jabber_FLAGS -c /etc/jabberd/${SERVICE}.xml &\"" jabber -
         	RETVAL=$?
 		if [ $RETVAL -eq 0 ] ; then 
 			touch /var/lock/subsys/jabber-${SERVICE}
@@ -133,7 +125,7 @@ case "$1" in
   start)
   	if [ -z "$2" ] ; then
 		start_main_jabberd
-		for CONFIG in /etc/jabber/*.xml ; do
+		for CONFIG in /etc/jabberd/*.xml ; do
 			if [ -f "${CONFIG}" ] ; then
 				SERVICE=`basename $CONFIG .xml`
 				if [ "$SERVICE" != "jabber" ] ; then
@@ -150,10 +142,10 @@ case "$1" in
 		for SERVICE in $* ; do
 			if [ "$SERVICE" = "jabber" ] ; then
 				start_main_jabberd
-			elif [ -f /etc/jabber/${SERVICE}.xml ] ; then
+			elif [ -f /etc/jabberd/${SERVICE}.xml ] ; then
 				start_jabber_service $SERVICE
 			else
-				show "%s is missing" "/etc/jabber/${SERVICE}.xml"
+				show "%s is missing" "/etc/jabberd/${SERVICE}.xml"
 				fail
 			fi
 		done
@@ -172,10 +164,10 @@ case "$1" in
 		SERVICE=$2
 		if [ "$SERVICE" = "jabber" ] ; then
 			$0 stop
-		elif [ -f /etc/jabber/${SERVICE}.xml ] ; then
+		elif [ -f /etc/jabberd/${SERVICE}.xml ] ; then
 			stop_jabber_service $SERVICE
 		else
-			show "%s is missing" "/etc/jabber/${SERVICE}.xml"
+			show "%s is missing" "/etc/jabberd/${SERVICE}.xml"
 			fail
 		fi
 	fi
@@ -183,7 +175,7 @@ case "$1" in
 	;;
   status)
 	status jabberd
-	for CONFIG in /etc/jabber/*.xml ; do
+	for CONFIG in /etc/jabberd/*.xml ; do
 		if [ -f "${CONFIG}" ] ; then
 			SERVICE=`basename $CONFIG .xml`
 			if [ "$SERVICE" != "jabber" ] ; then
