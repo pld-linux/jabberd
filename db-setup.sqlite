@@ -3,6 +3,8 @@
 --
 --     sqlite3 jabberd2.db <  db-setup.sqlite
 --
+-- Please create database at /var/lib/jabberd/
+--
 
 --
 -- c2s authentication/registration table
