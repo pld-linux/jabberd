@@ -4,27 +4,29 @@
 %bcond_without	pgsql	# - don't build PostgreSQL storage and authreg backends
 %bcond_without	mysql	# - don't build MySQL storage and authreg backends
 %bcond_without	ldap	# - don't build ldap authreg backend
-#
+%bcond_with	amp	# - Advanced Message Processing (JEP-0079) implementation
+%bcond_with	oq	# - allows limiting the number of offline messages stored per user (only with mysql storage so far)
 %include	/usr/lib/rpm/macros.perl
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s6
-Release:	2.3
+Release:	2.4
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
 # Source0-md5:	ca2818885e126181e002949c71603df3
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
+#bcond amp
+Source3:	http://neonux.org/jabberd2/mod_amp.c
 Patch0:		%{name}-perlscript.patch
 Patch1:		%{name}-daemonize.patch
 Patch2:		%{name}-default_config.patch
 Patch3:		%{name}-sysconfdir.patch
 Patch4:		%{name}-delay_jobs.patch
 Patch5:		%{name}-binary_path.patch
-# Please dont add patches below to SOURCES, becouse they are already added
-# to jabberd2 cvs, and it will be included at s7
+# Feature release :)
 Patch6:		http://www.marquard.net/jabber/patches/patch-zzzz-s2s-v5
 Patch7:		http://www.marquard.net/jabber/patches/patch-s2-config-update
 Patch8:		http://www.marquard.net/jabber/patches/patch-sm-shutdown
@@ -37,6 +39,11 @@ Patch14:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-85
 Patch15:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-86
 Patch16:	http://www.marquard.net/jabber/patches/patch-sx-stream-err
 Patch17:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-88
+#bcond amp
+#oryginal patch from http://neonux.org/jabberd2/mod_amp.patch
+Patch18:	%{name}-mod_amp.patch
+#bcond oq
+Patch19:	http://www.marquard.net/jabber/patches/patch-sm-offline-quota
 URL:		http://jabberd.jabberstudio.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -87,6 +94,15 @@ protokó³ XMPP.
 %patch15 -p0
 %patch16 -p0
 %patch17 -p0
+
+%if %{with amp}
+install %{SOURCE3} sm/
+%patch18 -p1
+%endif
+
+%if %{with oq}
+%patch19 -p0
+%endif
 
 %build
 %{__libtoolize}
