@@ -31,11 +31,11 @@ fi
 start_main_jabberd() {
 
 	# Check if the service is already running?
-	if [ ! -f /var/lock/subsys/jabberd ] ; then
+	if [ ! -f /var/lock/subsys/jabberd ]; then
 		msg_starting jabberd
 		daemon /usr/sbin/jabberd -B -U jabber $JABBERD_FLAGS $jabber_FLAGS -c /etc/jabberd/jabber.xml
 		RETVAL=$?
-		if [ $RETVAL -eq 0 ] ; then 
+		if [ $RETVAL -eq 0 ]; then 
 			touch /var/lock/subsys/jabberd
 			ln -sf /var/lib/jabber/jabber.pid /var/run/jabberd.pid
 		fi
@@ -56,7 +56,7 @@ start_jabber_service() {
 		daemon /usr/sbin/jabberd -B -U jabber $FLAGS $jabber_FLAGS -c /etc/jabberd/${SERVICE}.xml
 		RET=$?
 		[ $RETVAL -ne 0 ] && RETVAL=$RET
-		if [ $RETVAL -eq 0 ] ; then 
+		if [ $RETVAL -eq 0 ]; then 
 			touch /var/lock/subsys/jabber-${SERVICE}
 			ln -fs /var/lib/jabber/${SERVICE}.pid /var/run/jabber-${SERVICE}.pid
 		fi
@@ -95,7 +95,7 @@ stop_jabber_service() {
 # so only *.pid files can be used
 jabber_status(){
 	# Test syntax.
-	if [ $# = 0 ] ; then
+	if [ $# = 0 ]; then
 		msg_usage "$0 status {subsys} [{service}]"
 		return 4
 	fi
@@ -103,9 +103,9 @@ jabber_status(){
 	service=$1
 
 	# Try "/var/run/*.pid" files
-	if [ -f /var/run/$service.pid ] ; then
+	if [ -f /var/run/$service.pid ]; then
 		pid=`head -1 /var/run/$service.pid`
-		if [ -n "$pid" ] ; then
+		if [ -n "$pid" ]; then
 			if ps -p "$pid" >/dev/null 2>&1 ; then
 				nls "%s (pid %s) is running..." "$service" "$pid"
 				return 0
@@ -128,12 +128,12 @@ RETVAL=0
 # See how we were called.
 case "$1" in
   start)
-  	if [ -z "$2" ] ; then
+  	if [ -z "$2" ]; then
 		start_main_jabberd
 		for CONFIG in /etc/jabberd/*.xml ; do
-			if [ -f "${CONFIG}" ] ; then
+			if [ -f "${CONFIG}" ]; then
 				SERVICE=`basename $CONFIG .xml`
-				if [ "$SERVICE" != "jabber" ] ; then
+				if [ "$SERVICE" != "jabber" ]; then
 					eval "RUN_SERVICE=\$RUN_`echo ${SERVICE}|sed -e's/-/_/'`"
 					if [ -z "$RUN_SERVICE" ] || is_yes "$RUN_SERVICE" ; then
 						start_jabber_service "$SERVICE"
@@ -144,9 +144,9 @@ case "$1" in
 	else
 		shift
 		for SERVICE in $* ; do
-			if [ "$SERVICE" = "jabber" ] ; then
+			if [ "$SERVICE" = "jabber" ]; then
 				start_main_jabberd
-			elif [ -f /etc/jabberd/${SERVICE}.xml ] ; then
+			elif [ -f /etc/jabberd/${SERVICE}.xml ]; then
 				start_jabber_service $SERVICE
 			else
 				show "%s is missing" "/etc/jabberd/${SERVICE}.xml"
@@ -157,9 +157,9 @@ case "$1" in
 	fi
 	;;
   stop)
-  	if [ -z "$2" ] ; then
+  	if [ -z "$2" ]; then
 		for LOCK in /var/lock/subsys/jabber-* ; do
-			if [ -f "${LOCK}" ] ; then
+			if [ -f "${LOCK}" ]; then
 				SERVICE=`basename "$LOCK" | sed -e's/^jabber-//'`
 				stop_jabber_service "$SERVICE"
 			fi
@@ -167,9 +167,9 @@ case "$1" in
 		stop_main_jabberd
 	else
 		SERVICE=$2
-		if [ "$SERVICE" = "jabber" ] ; then
+		if [ "$SERVICE" = "jabber" ]; then
 			stop_main_jabberd
-		elif [ -f /etc/jabberd/${SERVICE}.xml ] ; then
+		elif [ -f /etc/jabberd/${SERVICE}.xml ]; then
 			stop_jabber_service $SERVICE
 		else
 			show "%s is missing" "/etc/jabberd/${SERVICE}.xml"
@@ -181,9 +181,9 @@ case "$1" in
   status)
 	status jabberd
 	for CONFIG in /etc/jabberd/*.xml ; do
-		if [ -f "${CONFIG}" ] ; then
+		if [ -f "${CONFIG}" ]; then
 			SERVICE=`basename $CONFIG .xml`
-			if [ "$SERVICE" != "jabber" ] ; then
+			if [ "$SERVICE" != "jabber" ]; then
 				jabber_status jabber-${SERVICE}
 			fi
 		fi
