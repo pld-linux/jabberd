@@ -23,6 +23,7 @@ BuildRequires:	pam-devel
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 Requires(post):	/usr/bin/perl
 Conflicts:	jabber
+Obsoletes:	jabber-irc-transport
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
