@@ -9,8 +9,7 @@
 # allows limiting the number of offline messages stored per user (mysql storage)
 # and allows offline storage (queuing) of subscription requests and/or messages
 # to be disabled
-%bcond_with	amp	# - Advanced Message Processing (JEP-0079) implementation
-			#  (make package unstable!)
+#%bcond_with	amp	# - Advanced Message Processing (JEP-0079) implementation (broken so disabled)
 %bcond_with	bxmpp	# - patches c2s to allow connections from Flash clients which don't use proper XMPP
 %bcond_with	avatars	# - add support to storage avatars
 
@@ -19,7 +18,7 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s6
-Release:	9
+Release:	10
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
@@ -124,10 +123,11 @@ install %{SOURCE4} sm/
 %patch18 -p0
 %patch19 -p0
 
-%if %{with amp}
-install %{SOURCE5} sm/
-%patch20 -p1
-%endif
+# make sm unstable,
+#%if %{with amp}
+#install %{SOURCE5} sm/
+#%patch20 -p1
+#%endif
 
 %if %{with oq}
 %patch21 -p0
@@ -145,6 +145,8 @@ install %{SOURCE5} sm/
 %endif
 
 %build
+#http://j2.openaether.org/bugzilla/show_bug.cgi?id=17
+export CFLAGS="-fno-strict-aliasing"
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
