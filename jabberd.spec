@@ -55,7 +55,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},/var/lib/%{name}/db,/var/run/%{name},/etc/
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-mv $RPM_BUILD_ROOT%{_libdir}/jabberd/jabberd $RPM_BUILD_ROOT%{_bindir}
+mv $RPM_BUILD_ROOT%{_libdir}/jabberd/jabberd $RPM_BUILD_ROOT%{_sbindir}
 rm $RPM_BUILD_ROOT%{_sysconfdir}/jabberd{,/templates}/*.dist
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
@@ -122,7 +122,7 @@ fi
 %attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabberd/*.xml
 %dir %{_sysconfdir}/jabberd/templates
 %attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabberd/templates/*.xml
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_sbindir}/*
 %dir %{_libdir}/jabberd
 %attr(755,root,root) %{_libdir}/%{name}/*
 %dir %attr(770,root,jabber) /var/lib/%{name}
