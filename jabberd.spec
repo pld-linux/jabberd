@@ -12,18 +12,16 @@
 %bcond_with	bxmpp	# - patches c2s to allow connections from Flash clients which don't use proper XMPP
 %bcond_with	avatars	# - add support to storage avatars
 
-%define		_snap	20050323
 %include	/usr/lib/rpm/macros.perl
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.0
-Release:	0.%{_snap}.1
-Epoch:		1
+Version:	2.0s7
+Release:	1
 License:	GPL
 Group:		Applications/Communications
-Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}cvs%{_snap}.tar.gz
-# Source0-md5:	65fbe3c7ccd783e88df477eea65323fd
+Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}.tar.gz
+# Source0-md5:	1f10641964d257944eae2f8f295cfcba
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 #bcond amp
@@ -76,7 +74,7 @@ Nowoczesny, wolnodostêpny serwer Jabbera implementuj±cy najnowszy
 protokó³ XMPP.
 
 %prep
-%setup -q -n %{name}-%{version}cvs
+%setup -q -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
