@@ -9,12 +9,12 @@
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.0s3
-Release:	4
+Version:	2.0s4
+Release:	0.1
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
-# Source0-md5:	c15f8f07cb2ee499cd21c0b883b9f353
+# Source0-md5:	2682037fc177e1f3e7d7869cb3f59c1d
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-perlscript.patch
@@ -23,22 +23,6 @@ Patch2:		%{name}-default_config.patch
 Patch3:		%{name}-sysconfdir.patch
 Patch4:		%{name}-delay_jobs.patch
 Patch5:		%{name}-binary_path.patch
-
-Patch6:		%{name}-nad-cache.patch
-Patch7:		%{name}-patch-sm.patch
-Patch8:		%{name}-patch-sm-mod_announce.patch
-Patch9:		%{name}-patch-io.patch
-Patch10:	%{name}-patch-sm-pkt.patch
-Patch11:	%{name}-patch-pool-cleanup.patch
-Patch12:	%{name}-patch-ssl.patch
-Patch13:	%{name}-patch-s2s-main.patch
-Patch14:	%{name}-patch-util-xhash.patch
-Patch15:	%{name}-patch-scod-mech_plain.patch
-Patch16:	%{name}-util-nad.patch
-
-Patch17:	%{name}-patch-v2-sm-pres.patch
-Patch18:	%{name}-patch-sm-storage-check.patch
-
 URL:		http://jabberd.jabberstudio.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -53,11 +37,7 @@ BuildRequires:	pam-devel
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 PreReq:		rc-scripts
-#Requires(pre):	/usr/bin/getgid
-#Requires(pre):	/bin/id
-#Requires(pre):	/usr/sbin/groupadd
-#Requires(pre):	/usr/sbin/useradd
-Requires(post): jabber-common
+PreReq: 	jabber-common
 Requires(post):	textutils
 Requires(post):	/usr/bin/perl
 Requires(post,preun):	/sbin/chkconfig
@@ -80,22 +60,8 @@ protokó³ XMPP.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p0
-%patch7 -p0
-%patch8 -p0
-%patch9 -p0
-%patch10 -p0
-%patch11 -p0
-%patch12 -p0
-%patch13 -p0
-%patch14 -p0
-%patch15 -p0
-%patch16 -p0
-%patch17 -p0
-%patch18 -p0
 
 %build
-perl -pi -e 's/^sinclude/dnl sinclude/' configure.in
 %{__libtoolize}
 %{__aclocal} 
 %{__autoconf}
@@ -130,16 +96,6 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
-
-#%%pre
-#if [ "$1" = "1" ] ; then
-#	if [ ! -n "`getgid jabber`" ]; then
-#		/usr/sbin/groupadd -f -g 74 jabber
-#	fi
-#	if [ ! -n "`id -u jabber 2>/dev/null`" ]; then
-#		/usr/sbin/useradd -g jabber -d /var/lib/jabber -u 74 -s /bin/false jabber 2>/dev/null
-#	fi
-#fi
 
 %post
 if [ -f /etc/jabber/secret ] ; then
