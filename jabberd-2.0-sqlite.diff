@@ -1,0 +1,70 @@
+diff -ur jabberd-2.0s6.orig/configure.in jabberd-2.0s6/configure.in
+--- jabberd-2.0s6.orig/configure.in	2004-12-12 04:06:27.000000000 +0100
++++ jabberd-2.0s6/configure.in	2004-12-24 23:17:16.691948352 +0100
+@@ -190,6 +190,22 @@
+ fi
+ 
+ 
++dnl SQLite 3
++AC_ARG_ENABLE(sqlite, AC_HELP_STRING([--enable-sqlite], [enable SQLite 3 storage support (no)]),
++              want_sqlite=$enableval, want_sqlite=no)
++if test "x-$want_sqlite" = "x-yes" ; then
++    AC_CHECK_HEADERS(sqlite3.h)
++    if test "x-$ac_cv_header_sqlite3_h" = "x-yes" ; then
++        AC_CHECK_LIB(sqlite3, sqlite3_open)
++    fi
++    if test "x-$ac_cv_lib_sqlite3_sqlite3_open" != "x-yes" ; then
++        AC_MSG_ERROR([SQLite 3 library not found])
++    else
++        AC_DEFINE(STORAGE_SQLITE,1,[Define to 1 if you want to use SQLite 3 for storage.])
++    fi
++fi
++
++
+ dnl berkeley db
+ AC_ARG_ENABLE(db, AC_HELP_STRING([--enable-db], [enable Berkeley DB auth/reg/storage support (no)]),
+               want_db=$enableval, want_db=no)
+diff -ur jabberd-2.0s6.orig/sm/Makefile.am jabberd-2.0s6/sm/Makefile.am
+--- jabberd-2.0s6.orig/sm/Makefile.am	2004-04-08 08:51:23.000000000 +0200
++++ jabberd-2.0s6/sm/Makefile.am	2004-12-24 23:13:36.245461312 +0100
+@@ -19,6 +19,7 @@
+              storage_fs.c \
+              storage_mysql.c \
+              storage_pgsql.c \
++             storage_sqlite.c \
+              mod_active.c \
+              mod_announce.c \
+              mod_deliver.c \
+diff -ur jabberd-2.0s6.orig/sm/storage.c jabberd-2.0s6/sm/storage.c
+--- jabberd-2.0s6.orig/sm/storage.c	2004-11-13 17:08:33.000000000 +0100
++++ jabberd-2.0s6/sm/storage.c	2004-12-24 23:13:21.540696776 +0100
+@@ -45,6 +45,9 @@
+ #ifdef STORAGE_PGSQL
+ extern st_ret_t st_pgsql_init(st_driver_t);
+ #endif
++#ifdef STORAGE_SQLITE
++extern st_ret_t st_sqlite_init(st_driver_t);
++#endif
+ 
+ static char *st_driver_names[] = {
+ #ifdef STORAGE_DB
+@@ -59,6 +62,9 @@
+ #ifdef STORAGE_PGSQL
+     "pgsql",
+ #endif
++#ifdef STORAGE_SQLITE
++    "sqlite",
++#endif
+     NULL
+ };
+ 
+@@ -75,6 +81,9 @@
+ #ifdef STORAGE_PGSQL
+     st_pgsql_init,
+ #endif
++#ifdef STORAGE_SQLITE
++    st_sqlite_init,
++#endif
+     NULL
+ };
+ 
