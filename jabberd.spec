@@ -33,6 +33,7 @@ BuildRequires:	openssl-devel >= 0.9.6b
 %{!?_without_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	pam-devel
 BuildRequires:	rpm-perlprov >= 3.0.3-16
+BuildRequires:	gettext-devel
 PreReq:		rc-scripts
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/bin/id
