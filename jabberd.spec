@@ -1,4 +1,11 @@
 %include	/usr/lib/rpm/macros.perl
+
+# Conditional build:
+# _without_db		- build db storage and authreg backends
+# _without_pgsql	- build pgsql storage and authreg backends
+# _without_mysql	- build mysql storage and authreg backends
+# _without_ldap		- build ldap authreg backend
+
 Summary:	Jabber/XMPP server
 Name:		jabberd
 Version:	2.0
@@ -15,12 +22,14 @@ Patch2:		%{name}-daemonize.patch
 Patch3:		%{name}-default_config.patch
 Patch4:		%{name}-sysconfdir.patch
 Patch5:		%{name}-delay_jobs.patch
+Patch6:		%{name}-c2s_crash.patch
+Patch7:		%{name}-digest_md5_rspauth.patch
 URL:		http://jabberd.jabberstudio.org
 BuildRequires:	openssl-devel >= 0.9.6b
-BuildRequires:	db-devel >= 4.1.24
-BuildRequires:	openldap-devel >= 2.1.0
-BuildRequires:	postgresql-devel
-BuildRequires:	mysql-devel
+%{?_with_db:BuildRequires:	db-devel >= 4.1.24}
+%{?_with_ldap:BuildRequires:	openldap-devel >= 2.1.0}
+%{?_with_pgsql:BuildRequires:	postgresql-devel}
+%{?_with_mysql:BuildRequires:	mysql-devel}
 BuildRequires:	pam-devel
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 Requires:	jabber-common
@@ -40,6 +49,8 @@ Modern open source Jabber server, implementing latest XMPP protocol.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
+%patch7 -p1
 
 %build
 %{__libtoolize}
@@ -49,8 +60,16 @@ Modern open source Jabber server, implementing latest XMPP protocol.
 %{__automake}
 %configure \
 	--bindir="%{_libdir}/%{name}" \
-	--enable-authreg="anon db pipe ldap mysql pam pgsql" \
-	--enable-storage="db fs mysql pgsql"
+	--enable-authreg="anon pipe pam
+		%{!?_without_db:db}
+		%{!?_without_ldap:ldap}
+		%{!?_without_mysql:mysql}
+		%{!?_without_pgsql:pgsql}" \
+	--enable-storage="fs
+		%{!?_without_db:db}
+		%{!?_without_mysql:mysql}
+		%{!?_without_pgsql:pgsql}" \
+	%{?debug:--enable-debug}
 
 %{__make}
 
