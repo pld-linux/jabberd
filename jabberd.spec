@@ -68,8 +68,6 @@ Requires:	jabber-common
 Obsoletes:	jabber
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		specflags	-fno-strict-aliasing
-
 %description
 Modern open source Jabber server, implementing latest XMPP protocol.
 
