@@ -9,20 +9,20 @@
 # allows limiting the number of offline messages stored per user (mysql storage)
 # and allows offline storage (queuing) of subscription requests and/or messages
 # to be disabled
-#%bcond_with	amp	# - Advanced Message Processing (JEP-0079) implementation (broken so disabled)
 %bcond_with	bxmpp	# - patches c2s to allow connections from Flash clients which don't use proper XMPP
 %bcond_with	avatars	# - add support to storage avatars
 
+%define		_snap	20050321
 %include	/usr/lib/rpm/macros.perl
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.0s6
-Release:	10
+Version:	2.0cvs
+Release:	0.1
 License:	GPL
 Group:		Applications/Communications
-Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
-# Source0-md5:	ca2818885e126181e002949c71603df3
+Source0:	%{name}-%{version}-%{_snap}.tbz2
+# Source0-md5:	c14c839b931c15bedff9c81ee6a5c5c2
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 #bcond amp
@@ -37,29 +37,10 @@ Patch4:		%{name}-delay_jobs.patch
 Patch5:		%{name}-binary_path.patch
 Patch6:		http://svn.cmeerw.net/src/jabberd2/sqlite/%{name}-2.0-sqlite.diff
 Patch7:		%{name}-sm-examples.patch
-# Feature release :)
-Patch8:		http://www.marquard.net/jabber/patches/patch-zzzz-s2s-v5
-Patch9:		http://www.marquard.net/jabber/patches/patch-s2-config-update
-Patch10:	http://www.marquard.net/jabber/patches/patch-sm-shutdown
-Patch11:	http://www.marquard.net/jabber/patches/patch-reconnect
-Patch12:	http://www.marquard.net/jabber/patches/patch-db-cleanup
-Patch13:	http://www.marquard.net/jabber/patches/patch-sm-db-fixup
-Patch14:	http://www.marquard.net/jabber/patches/patch-empty-jid-v2
-Patch15:	http://www.marquard.net/jabber/patches/patch-mod_session
-Patch16:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-85
-Patch17:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-86
-Patch18:	http://www.marquard.net/jabber/patches/patch-sx-stream-err
-Patch19:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-88
-#bcond amp
-#original patch from http://neonux.org/jabberd2/mod_amp.patch
-Patch20:	%{name}-mod_amp.patch
 #bcond oq
 Patch21:	http://www.marquard.net/jabber/patches/patch-sm-offline-quota
 #bcond bxmpp
 Patch22:	http://www.marquard.net/jabber/patches/patch-flash-v2
-# Feature release :)
-Patch23:	http://www.marquard.net/jabber/patches/patch-doc-updates
-Patch24:	http://www.marquard.net/jabber/patches/patch-ldap-referral
 # avatars
 #http://j2.openaether.org/bugzilla/attachment.cgi?id=23&action=diff&context=patch&collapsed=&headers=1&format=raw
 Patch25:	%{name}-mod_iq_vcard.patch
@@ -104,32 +85,13 @@ protokó³ XMPP.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-#SQLite
+
 %if %{with sqlite}
 %patch6 -p1
 %patch7 -p1
 install %{SOURCE3} tools/
 install %{SOURCE4} sm/
 %endif
-#
-%patch8 -p0
-%patch9 -p0
-%patch10 -p0
-%patch11 -p0
-%patch12 -p0
-%patch13 -p0
-%patch14 -p0
-%patch15 -p0
-%patch16 -p0
-%patch17 -p0
-%patch18 -p0
-%patch19 -p0
-
-# make sm unstable,
-#%if %{with amp}
-#install %{SOURCE5} sm/
-#%patch20 -p1
-#%endif
 
 %if %{with oq}
 %patch21 -p0
@@ -138,8 +100,6 @@ install %{SOURCE4} sm/
 %if %{with bxmpp}
 %patch22 -p0
 %endif
-%patch23 -p0
-%patch24 -p0
 
 %if %{with avatars}
 %patch25 -p1
