@@ -17,8 +17,8 @@
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.0cvs
-Release:	0.1
+Version:	2.0
+Release:	0.%{_snap}.1
 Epoch:		1
 License:	GPL
 Group:		Applications/Communications
