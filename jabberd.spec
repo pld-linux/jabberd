@@ -1,8 +1,4 @@
 #
-# TODO:
-# add bcond avatars with avatars patch, this feature will be released
-# at jabberd-2.1
-#
 # Conditional build
 %bcond_without	db	# - don't build db storage and authreg backends
 %bcond_without	pgsql	# - don't build PostgreSQL storage and authreg backends
@@ -15,13 +11,14 @@
 # to be disabled
 %bcond_with	amp	# - Advanced Message Processing (JEP-0079) implementation
 %bcond_with	bxmpp	# - patches c2s to allow connections from Flash clients which don't use proper XMPP
+%bcond_with	avatars	# - add support to storage avatars
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s6
-Release:	8
+Release:	8.9
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
@@ -140,8 +137,11 @@ install %{SOURCE5} sm/
 %endif
 %patch23 -p0
 %patch24 -p0
+
+%if %{with avatars}
 %patch25 -p1
 %patch26 -p1
+%endif
 
 %build
 %{__libtoolize}
@@ -196,7 +196,9 @@ else
 	echo "Run \"/etc/rc.d/init.d/jabberd start\" to start Jabber server."
 fi
 
+%if %{with avatars}
 echo "This j2 package has new functionality, please read AVATARS file."
+%endif
 
 %preun
 if [ "$1" = "0" ]; then
@@ -208,7 +210,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS PROTOCOL README TODO AVATARS
+%doc AUTHORS ChangeLog NEWS PROTOCOL README TODO {?with_avatars:AVATARS}
 %doc tools/{migrate.pl,db-setup.mysql,db-setup.pgsql,db-setup.sqlite,pipe-auth.pl}
 %attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/*.cfg
 %attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/*.xml
