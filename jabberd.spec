@@ -22,7 +22,7 @@ Release:	0.%{_snap}.1
 Epoch:		1
 License:	GPL
 Group:		Applications/Communications
-Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}%{_snap}.tar.gz
+Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}cvs%{_snap}.tar.gz
 # Source0-md5:	65fbe3c7ccd783e88df477eea65323fd
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
@@ -76,7 +76,7 @@ Nowoczesny, wolnodostêpny serwer Jabbera implementuj±cy najnowszy
 protokó³ XMPP.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}cvs
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
