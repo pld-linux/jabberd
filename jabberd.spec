@@ -10,11 +10,11 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0
-Release:	0.b1.2
+Release:	0.b3.1
 License:	GPL
 Group:		Applications/Communications
-Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}b1.tar.gz
-# Source0-md5:	845d023346743b997201873d938fb8f7
+Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}b3.tar.gz
+# Source0-md5:	02d688793c22e0bcd603f1f396336876
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-perlscript.patch
@@ -23,8 +23,6 @@ Patch2:		%{name}-daemonize.patch
 Patch3:		%{name}-default_config.patch
 Patch4:		%{name}-sysconfdir.patch
 Patch5:		%{name}-delay_jobs.patch
-Patch6:		%{name}-c2s_crash.patch
-Patch7:		%{name}-digest_md5_rspauth.patch
 URL:		http://jabberd.jabberstudio.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -58,15 +56,13 @@ Nowoczesny, wolnodostêpny serwer Jabbera implementuj±cy najnowszy
 protokó³ XMPP.
 
 %prep
-%setup -q -n %{name}-%{version}b1
+%setup -q -n %{name}-%{version}b3
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
-%patch7 -p1
 
 %build
 %{__libtoolize}
