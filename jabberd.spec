@@ -1,12 +1,13 @@
 %include	/usr/lib/rpm/macros.perl
-
+#
 # Conditional build:
 # _without_db		- build db storage and authreg backends
 # _without_pgsql	- build pgsql storage and authreg backends
 # _without_mysql	- build mysql storage and authreg backends
 # _without_ldap		- build ldap authreg backend
-
+#
 Summary:	Jabber/XMPP server
+Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0
 Release:	0.b1.1
@@ -32,14 +33,25 @@ BuildRequires:	openssl-devel >= 0.9.6b
 %{?_with_mysql:BuildRequires:	mysql-devel}
 BuildRequires:	pam-devel
 BuildRequires:	rpm-perlprov >= 3.0.3-16
-Requires:	jabber-common
+PreReq:		rc-scripts
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/bin/id
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
 Requires(post): jabber-common
+Requires(post):	textutils
 Requires(post):	/usr/bin/perl
+Requires(post,preun):	/sbin/chkconfig
+Requires:	jabber-common
 Obsoletes:	jabber
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Modern open source Jabber server, implementing latest XMPP protocol.
+
+%description -l pl
+Nowoczesny, wolnodostêpny serwer Jabbera implementuj±cy najnowszy
+protokó³ XMPP.
 
 %prep
 %setup -q -n %{name}-%{version}b1
@@ -90,12 +102,12 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-if [ "$1" = 1 ] ; then
+if [ "$1" = "1" ] ; then
 	if [ ! -n "`getgid jabber`" ]; then
-		%{_sbindir}/groupadd -f -g 74 jabber
+		/usr/sbin/groupadd -f -g 74 jabber
 	fi
 	if [ ! -n "`id -u jabber 2>/dev/null`" ]; then
-		%{_sbindir}/useradd -g jabber -d /var/lib/jabber -u 74 -s /bin/false jabber 2>/dev/null
+		/usr/sbin/useradd -g jabber -d /var/lib/jabber -u 74 -s /bin/false jabber 2>/dev/null
 	fi
 fi
 
@@ -103,16 +115,16 @@ fi
 if [ -f /etc/jabber/secret ] ; then
 	SECRET=`cat /etc/jabber/secret`
 	if [ -n "$SECRET" ] ; then
-        	echo "Updating component authentication secret in Jabberd config files..."
+		echo "Updating component authentication secret in Jabberd config files..."
 		perl -pi -e "s/>secret</>$SECRET</" /etc/jabber/*.xml
 	fi
 fi
 
 /sbin/chkconfig --add jabberd
 if [ -r /var/lock/subsys/jabberd ]; then
-        /etc/rc.d/init.d/jabberd restart >&2
+	/etc/rc.d/init.d/jabberd restart >&2
 else
-        echo "Run \"/etc/rc.d/init.d/jabberd start\" to start Jabber server."
+	echo "Run \"/etc/rc.d/init.d/jabberd start\" to start Jabber server."
 fi
 
 %preun
@@ -122,8 +134,6 @@ if [ "$1" = "0" ]; then
 	fi
 	/sbin/chkconfig --del jabberd
 fi
-
-%postun
 
 %files
 %defattr(644,root,root,755)
