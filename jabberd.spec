@@ -10,11 +10,11 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0
-Release:	0.b3.1
+Release:	0.rc1.1
 License:	GPL
 Group:		Applications/Communications
-Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}b3.tar.gz
-# Source0-md5:	02d688793c22e0bcd603f1f396336876
+Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}rc1.tar.gz
+# Source0-md5:	8c49245441c5e94fcda9715a382637dd
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-perlscript.patch
@@ -56,7 +56,7 @@ Nowoczesny, wolnodostêpny serwer Jabbera implementuj±cy najnowszy
 protokó³ XMPP.
 
 %prep
-%setup -q -n %{name}-%{version}b3
+%setup -q -n %{name}-%{version}rc1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
