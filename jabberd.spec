@@ -10,7 +10,7 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s3
-Release:	3
+Release:	4
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
@@ -35,6 +35,9 @@ Patch13:	%{name}-patch-s2s-main.patch
 Patch14:	%{name}-patch-util-xhash.patch
 Patch15:	%{name}-patch-scod-mech_plain.patch
 Patch16:	%{name}-util-nad.patch
+
+Patch17:	%{name}-patch-v2-sm-pres.patch
+Patch18:	%{name}-patch-sm-storage-check.patch
 
 URL:		http://jabberd.jabberstudio.org/
 BuildRequires:	autoconf
@@ -77,7 +80,6 @@ protokó³ XMPP.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-
 %patch6 -p0
 %patch7 -p0
 %patch8 -p0
@@ -89,6 +91,8 @@ protokó³ XMPP.
 %patch14 -p0
 %patch15 -p0
 %patch16 -p0
+%patch17 -p0
+%patch18 -p0
 
 %build
 perl -pi -e 's/^sinclude/dnl sinclude/' configure.in
