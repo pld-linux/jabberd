@@ -1,18 +1,14 @@
 #
-# TODO:
-# - patch for examples to use mod offline and limit storage (sm.xml)
-#   then bounce to release 7,
-#
 # Conditional build
 %bcond_without	db	# - don't build db storage and authreg backends
 %bcond_without	pgsql	# - don't build PostgreSQL storage and authreg backends
 %bcond_without	mysql	# - don't build MySQL storage and authreg backends
 %bcond_without	ldap	# - don't build ldap authreg backend
 %bcond_without  sqlite	# - don't build SQLite v3 storage and authreg backends
-%bcond_without	oq	# - allows limiting the number of offline messages \
-			stored per user (mysql storage) and allows offline \
-			storage (queuing) of subscription requests and/or \
-			messages to be disabled
+%bcond_without	oq	
+# allows limiting the number of offline messages stored per user (mysql storage)
+# and allows offline storage (queuing) of subscription requests and/or messages
+# to be disabled
 %bcond_with	amp	# - Advanced Message Processing (JEP-0079) implementation
 %bcond_with	bxmpp	# - patches c2s to allow connections from Flash clients which don't use proper XMPP
 
@@ -21,7 +17,7 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s6
-Release:	6.1
+Release:	7
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
@@ -39,7 +35,7 @@ Patch3:		%{name}-sysconfdir.patch
 Patch4:		%{name}-delay_jobs.patch
 Patch5:		%{name}-binary_path.patch
 Patch6:		http://svn.cmeerw.net/src/jabberd2/sqlite/%{name}-2.0-sqlite.diff
-Patch7:		%{name}-sqlite-example.patch
+Patch7:		%{name}-sm-examples.patch
 # Feature release :)
 Patch8:		http://www.marquard.net/jabber/patches/patch-zzzz-s2s-v5
 Patch9:		http://www.marquard.net/jabber/patches/patch-s2-config-update
