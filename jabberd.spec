@@ -6,7 +6,11 @@ License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}b1.tar.gz
 # Source0-md5:	845d023346743b997201873d938fb8f7
+Source1:	%{name}.init
+Source2:	%{name}.sysconfig
 Patch0:		%{name}-perlscript.patch
+Patch1:		%{name}-binary_path.patch
+Patch2:		%{name}-daemonize.patch
 URL:		http://jabberd.jabberstudio.org
 BuildRequires:	openssl-devel >= 0.9.6b
 BuildRequires:	db-devel >= 4.1.24
@@ -23,6 +27,8 @@ Modern open source Jabber server, implementing latest XMPP protocol.
 %prep
 %setup -q -n %{name}-%{version}b1
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 %{__libtoolize}
@@ -31,6 +37,7 @@ Modern open source Jabber server, implementing latest XMPP protocol.
 %{__autoheader}
 %{__automake}
 %configure \
+	--bindir="%{_libdir}/%{name}" \
 	--enable-authreg="anon db pipe ldap mysql pam pgsql" \
 	--enable-storage="db fs mysql pgsql"
 
@@ -38,11 +45,16 @@ Modern open source Jabber server, implementing latest XMPP protocol.
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_bindir},/var/lib/%{name}/db,/etc/{sysconfig,rc.d/init.d}}
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT	
+	DESTDIR=$RPM_BUILD_ROOT
 
-rm $RPM_BUILD_ROOT/etc/jabberd{,/templates}/*.dist
+mv $RPM_BUILD_ROOT%{_libdir}/jabberd/jabberd $RPM_BUILD_ROOT%{_bindir}
+rm $RPM_BUILD_ROOT%{_sysconfdir}/jabberd{,/templates}/*.dist
+
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -58,9 +70,9 @@ if [ "$1" = 1 ] ; then
 fi
 
 %post
-#/sbin/chkconfig --add jabberd
+/sbin/chkconfig --add jabberd
 if [ -r /var/lock/subsys/jabberd ]; then
-        #/etc/rc.d/init.d/jabberd restart >&2
+        /etc/rc.d/init.d/jabberd restart >&2
 else
         echo "Run \"/etc/rc.d/init.d/jabberd start\" to start Jabber server."
 fi
@@ -68,9 +80,9 @@ fi
 %preun
 if [ "$1" = "0" ]; then
 	if [ -r /var/lock/subsys/jabberd ]; then
-		#/etc/rc.d/init.d/jabberd stop >&2
+		/etc/rc.d/init.d/jabberd stop >&2
 	fi
-	#/sbin/chkconfig --del jabberd
+	/sbin/chkconfig --del jabberd
 fi
 
 %postun
@@ -80,14 +92,20 @@ if [ "$1" = "0" ]; then
 	%{_sbindir}/groupdel jabber 2> /dev/null
 fi
 
-
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog INSTALL NEWS README TODO tools/db-setup.mysql tools/db-setup.pgsql tools/pipe-auth.pl
-%dir /etc/jabberd
-%attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) /etc/jabberd/*.cfg
-%attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) /etc/jabberd/*.xml
-%dir /etc/jabberd/templates
-%attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) /etc/jabberd/templates/*.xml
+%dir %{_sysconfdir}/jabberd
+%attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabberd/*.cfg
+%attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabberd/*.xml
+%dir %{_sysconfdir}/jabberd/templates
+%attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabberd/templates/*.xml
 %attr(755,root,root) %{_bindir}/*
+%dir %{_libdir}/jabberd
+%attr(755,root,root) %{_libdir}/%{name}/*
+%dir %attr(750,root,jabber) /var/lib/%{name}
+%dir %attr(750,root,jabber) /var/lib/%{name}/db
+%attr(754,root,root) /etc/rc.d/init.d/%{name}
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/%{name}
+
 %{_mandir}/man*/*
