@@ -1,20 +1,20 @@
 #
-# Conditional build:
-# _without_db		- don't build db storage and authreg backends
-# _without_pgsql	- don't build pgsql storage and authreg backends
-# _without_mysql	- don't build mysql storage and authreg backends
-# _without_ldap		- don't build ldap authreg backend
-#
+# Conditional build
+%bcond_without db	# - don't build db storage and authreg backends
+%bcond_without pgsql	# - don't build pgsql storage and authreg backends
+%bcond_without mysql	# - don't build mysql storage and authreg backends
+%bcond_without ldap	# - don't build ldap authreg backend
+
 %include	/usr/lib/rpm/macros.perl
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.0
-Release:	0.rc1.1
+Version:	2.0s1
+Release:	0.1
 License:	GPL
 Group:		Applications/Communications
-Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}rc1.tar.gz
-# Source0-md5:	8c49245441c5e94fcda9715a382637dd
+Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
+# Source0-md5:	d9d5de1b430c12758d613cc7882bc0b6
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-perlscript.patch
@@ -26,11 +26,11 @@ Patch5:		%{name}-delay_jobs.patch
 URL:		http://jabberd.jabberstudio.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
-%{!?_without_db:BuildRequires:	db-devel >= 4.1.24}
+%{?with_db:BuildRequires:	db-devel >= 4.1.24}
 BuildRequires:	gettext-devel
 BuildRequires:	libtool
-%{!?_without_mysql:BuildRequires:       mysql-devel}
-%{!?_without_ldap:BuildRequires:	openldap-devel >= 2.1.0}
+%{?with_mysql:BuildRequires:       mysql-devel}
+%{?with_ldap:BuildRequires:	openldap-devel >= 2.1.0}
 BuildRequires:	openssl-devel >= 0.9.6b
 BuildRequires:	pam-devel
 %{!?_without_pgsql:BuildRequires:	postgresql-devel}
@@ -56,7 +56,7 @@ Nowoczesny, wolnodostêpny serwer Jabbera implementuj±cy najnowszy
 protokó³ XMPP.
 
 %prep
-%setup -q -n %{name}-%{version}rc1
+%setup -q -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -73,14 +73,14 @@ protokó³ XMPP.
 %configure \
 	--bindir="%{_libdir}/%{name}" \
 	--enable-authreg="anon pipe pam
-		%{!?_without_db:db}
-		%{!?_without_ldap:ldap}
-		%{!?_without_mysql:mysql}
-		%{!?_without_pgsql:pgsql}" \
+		%{?with_db:db}
+		%{?with_ldap:ldap}
+		%{?with_mysql:mysql}
+		%{?with_pgsql:pgsql}" \
 	--enable-storage="fs
-		%{!?_without_db:db}
-		%{!?_without_mysql:mysql}
-		%{!?_without_pgsql:pgsql}" \
+		%{?with_db:db}
+		%{?with_mysql:mysql}
+		%{?with_pgsql:pgsql}" \
 	%{?debug:--enable-debug}
 
 %{__make}
