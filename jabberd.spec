@@ -30,7 +30,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 %{?with_db:BuildRequires:	db-devel >= 4.1.24}
 BuildRequires:	gettext-devel
-BuildRequires:	libidn-devel
+BuildRequires:	libidn-devel >= 0.3.0
 BuildRequires:	libtool
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.1.0}
