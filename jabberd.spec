@@ -17,7 +17,7 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s6
-Release:	7
+Release:	7.1
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
@@ -59,6 +59,10 @@ Patch22:	http://www.marquard.net/jabber/patches/patch-flash-v2
 # Feature release :)
 Patch23:	http://www.marquard.net/jabber/patches/patch-doc-updates
 Patch24:	http://www.marquard.net/jabber/patches/patch-ldap-referral
+# avatars
+#http://j2.openaether.org/bugzilla/attachment.cgi?id=23&action=diff&context=patch&collapsed=&headers=1&format=raw
+Patch25:	%{name}-mod_iq_vcard.patch
+Patch26:	%{name}-avatars.patch
 URL:		http://jabberd.jabberstudio.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -132,6 +136,8 @@ install %{SOURCE5} sm/
 %endif
 %patch23 -p0
 %patch24 -p0
+%patch25 -p1
+%patch26 -p1
 
 %build
 %{__libtoolize}
@@ -186,6 +192,8 @@ else
 	echo "Run \"/etc/rc.d/init.d/jabberd start\" to start Jabber server."
 fi
 
+echo "This j2 package has new functionality, please read `AVATARS' file."
+
 %preun
 if [ "$1" = "0" ]; then
 	if [ -r /var/lock/subsys/jabberd ]; then
@@ -196,7 +204,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS PROTOCOL README TODO
+%doc AUTHORS ChangeLog NEWS PROTOCOL README TODO AVATARS
 %doc tools/{migrate.pl,db-setup.mysql,db-setup.pgsql,db-setup.sqlite,pipe-auth.pl}
 %attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/*.cfg
 %attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/*.xml
