@@ -4,14 +4,17 @@
 %bcond_without	pgsql	# - don't build PostgreSQL storage and authreg backends
 %bcond_without	mysql	# - don't build MySQL storage and authreg backends
 %bcond_without	ldap	# - don't build ldap authreg backend
+%bcond_without  sqlite	# - don't build SQLite v3 storage and authreg backends
 %bcond_with	amp	# - Advanced Message Processing (JEP-0079) implementation
 %bcond_with	oq	# - allows limiting the number of offline messages stored per user (only with mysql storage so far)
+%bcond_with	bxmpp	# - patches c2s to allow connections from Flash clients which don't use proper XMPP
+
 %include	/usr/lib/rpm/macros.perl
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s6
-Release:	2.4
+Release:	2.5
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
@@ -19,31 +22,36 @@ Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 #bcond amp
-Source3:	http://neonux.org/jabberd2/mod_amp.c
+Source3:	http://svn.cmeerw.net/src/jabberd2/sqlite/tools/db-setup.sqlite
+Source4:	http://svn.cmeerw.net/src/jabberd2/sqlite/sm/storage_sqlite.c
+Source5:	http://neonux.org/jabberd2/mod_amp.c
 Patch0:		%{name}-perlscript.patch
 Patch1:		%{name}-daemonize.patch
 Patch2:		%{name}-default_config.patch
 Patch3:		%{name}-sysconfdir.patch
 Patch4:		%{name}-delay_jobs.patch
 Patch5:		%{name}-binary_path.patch
+Patch6:		http://svn.cmeerw.net/src/jabberd2/sqlite/%{name}-2.0-sqlite.diff
 # Feature release :)
-Patch6:		http://www.marquard.net/jabber/patches/patch-zzzz-s2s-v5
-Patch7:		http://www.marquard.net/jabber/patches/patch-s2-config-update
-Patch8:		http://www.marquard.net/jabber/patches/patch-sm-shutdown
-Patch9:		http://www.marquard.net/jabber/patches/patch-reconnect
-Patch10:	http://www.marquard.net/jabber/patches/patch-db-cleanup
-Patch11:	http://www.marquard.net/jabber/patches/patch-sm-db-fixup
-Patch12:	http://www.marquard.net/jabber/patches/patch-empty-jid-v2
-Patch13:	http://www.marquard.net/jabber/patches/patch-mod_session
-Patch14:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-85
-Patch15:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-86
-Patch16:	http://www.marquard.net/jabber/patches/patch-sx-stream-err
-Patch17:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-88
+Patch7:		http://www.marquard.net/jabber/patches/patch-zzzz-s2s-v5
+Patch8:		http://www.marquard.net/jabber/patches/patch-s2-config-update
+Patch9:		http://www.marquard.net/jabber/patches/patch-sm-shutdown
+Patch10:	http://www.marquard.net/jabber/patches/patch-reconnect
+Patch11:	http://www.marquard.net/jabber/patches/patch-db-cleanup
+Patch12:	http://www.marquard.net/jabber/patches/patch-sm-db-fixup
+Patch13:	http://www.marquard.net/jabber/patches/patch-empty-jid-v2
+Patch14:	http://www.marquard.net/jabber/patches/patch-mod_session
+Patch15:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-85
+Patch16:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-86
+Patch17:	http://www.marquard.net/jabber/patches/patch-sx-stream-err
+Patch18:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-88
 #bcond amp
-#oryginal patch from http://neonux.org/jabberd2/mod_amp.patch
-Patch18:	%{name}-mod_amp.patch
+#original patch from http://neonux.org/jabberd2/mod_amp.patch
+Patch19:	%{name}-mod_amp.patch
 #bcond oq
-Patch19:	http://www.marquard.net/jabber/patches/patch-sm-offline-quota
+Patch20:	http://www.marquard.net/jabber/patches/patch-sm-offline-quota
+#bcond bxmpp
+Patch21:	http://www.marquard.net/jabber/patches/patch-flash-v2
 URL:		http://jabberd.jabberstudio.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -56,6 +64,7 @@ BuildRequires:	libtool
 BuildRequires:	openssl-devel >= 0.9.6d
 BuildRequires:	pam-devel
 %{?with_pgsql:BuildRequires:	postgresql-devel}
+%{?with_sqlite:BuildRequires:	sqlite3-devel}
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 PreReq:		rc-scripts
 PreReq: 	jabber-common
@@ -81,8 +90,12 @@ protokó³ XMPP.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+#SQLite
+%if %{with sqlite}
+%patch6 -p1
+install %{SOURCE3} tools/
+install %{SOURCE4} sm/
 #
-%patch6 -p0
 %patch7 -p0
 %patch8 -p0
 %patch9 -p0
@@ -94,14 +107,19 @@ protokó³ XMPP.
 %patch15 -p0
 %patch16 -p0
 %patch17 -p0
+%patch18 -p0
 
 %if %{with amp}
-install %{SOURCE3} sm/
-%patch18 -p1
+install %{SOURCE5} sm/
+%patch19 -p1
 %endif
 
 %if %{with oq}
-%patch19 -p0
+%patch20 -p0
+%endif
+
+%if %{with bxmpp}
+%patch21 -p0
 %endif
 
 %build
@@ -120,6 +138,7 @@ install %{SOURCE3} sm/
 	--enable-pipe \
 	--enable-pam \
 	%{?with_ldap:--enable-ldap} \
+	%{?with_mysql:--enable-sqlite} \
 	%{?debug:--enable-debug}
 
 %{__make}
@@ -167,7 +186,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS PROTOCOL README TODO
-%doc tools/{migrate.pl,db-setup.mysql,db-setup.pgsql,pipe-auth.pl}
+%doc tools/{migrate.pl,db-setup.mysql,db-setup.pgsql,db-setup.sqlite,pipe-auth.pl}
 %attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabber/*.cfg
 %attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabber/*.xml
 %dir %{_sysconfdir}/jabber/templates
