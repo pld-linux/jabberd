@@ -10,7 +10,7 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s3
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
@@ -37,10 +37,10 @@ BuildRequires:	pam-devel
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 PreReq:		rc-scripts
-Requires(pre):	/usr/bin/getgid
-Requires(pre):	/bin/id
-Requires(pre):	/usr/sbin/groupadd
-Requires(pre):	/usr/sbin/useradd
+#Requires(pre):	/usr/bin/getgid
+#Requires(pre):	/bin/id
+#Requires(pre):	/usr/sbin/groupadd
+#Requires(pre):	/usr/sbin/useradd
 Requires(post): jabber-common
 Requires(post):	textutils
 Requires(post):	/usr/bin/perl
@@ -102,15 +102,15 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%pre
-if [ "$1" = "1" ] ; then
-	if [ ! -n "`getgid jabber`" ]; then
-		/usr/sbin/groupadd -f -g 74 jabber
-	fi
-	if [ ! -n "`id -u jabber 2>/dev/null`" ]; then
-		/usr/sbin/useradd -g jabber -d /var/lib/jabber -u 74 -s /bin/false jabber 2>/dev/null
-	fi
-fi
+#%%pre
+#if [ "$1" = "1" ] ; then
+#	if [ ! -n "`getgid jabber`" ]; then
+#		/usr/sbin/groupadd -f -g 74 jabber
+#	fi
+#	if [ ! -n "`id -u jabber 2>/dev/null`" ]; then
+#		/usr/sbin/useradd -g jabber -d /var/lib/jabber -u 74 -s /bin/false jabber 2>/dev/null
+#	fi
+#fi
 
 %post
 if [ -f /etc/jabber/secret ] ; then
