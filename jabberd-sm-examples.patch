@@ -28,3 +28,23 @@
    </storage>
    
    <!-- Access control information -->
+--- jabberd-2.0s6/etc/sm.xml.dist.in~	2005-03-11 06:42:32.895546640 +0100
++++ jabberd-2.0s6/etc/sm.xml.dist.in	2005-03-11 06:48:50.324168768 +0100
+@@ -384,6 +384,17 @@
+     <auto-create/>
+     -->
+ 
++  <!-- Offline patches -->
++    <!-- By default, no quota or dropping messages or subscriptions 
++	 are disabled. -->
++    <!--
++    <offline>
++      <userquota>500</userquota>
++      <dropmessages/>
++      <dropsubscriptions/>
++    </offline>
++    -->
++
+     <!-- Templates. If defined, the contents of these files will be
+          stored in the users data store when they are created. -->
+     <template>
