@@ -1,4 +1,3 @@
-%define		_snap	20040520
 #
 # Conditional build
 %bcond_without	db	# - don't build db storage and authreg backends
@@ -11,12 +10,11 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s3
-Release:	0.%{_snap}.2
+Release:	1
 License:	GPL
 Group:		Applications/Communications
-#Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
-Source0:	jabberd2-%{_snap}.tar.bz2
-# Source0-md5:	8cdb4fe9bb01e2795cdb5e55902af3ec
+Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
+# Source0-md5:	c15f8f07cb2ee499cd21c0b883b9f353
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-perlscript.patch
@@ -59,7 +57,7 @@ Nowoczesny, wolnodostêpny serwer Jabbera implementuj±cy najnowszy
 protokó³ XMPP.
 
 %prep
-%setup -q -n jabberd2
+%setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
