@@ -41,7 +41,6 @@ start_main_jabberd() {
 		fi
 	else
 		msg_already_running jabberd
-		return 1
 	fi
 }
 
@@ -55,14 +54,13 @@ start_jabber_service() {
 		eval "SERVICE_FLAGS=\$`echo ${SERVICE}|sed -e's/-/_/'`_FLAGS"
 		
 		daemon /usr/sbin/jabberd -B -U jabber $FLAGS $jabber_FLAGS -c /etc/jabberd/${SERVICE}.xml
-		RETVAL=$?
+		[ $RETVAL -ne 0 ] && RETVAL=$?
 		if [ $RETVAL -eq 0 ] ; then 
 			touch /var/lock/subsys/jabber-${SERVICE}
 			ln -fs /var/lib/jabber/${SERVICE}.pid /var/run/jabber-${SERVICE}.pid
 		fi
 	else
 		msg_already_running "jabber-${SERVICE}"
-		return 1
 	fi
 }
 
@@ -74,7 +72,6 @@ stop_main_jabberd() {
 		rm -f /var/lock/subsys/jabberd /var/run/jabberd.pid /var/lib/jabber/jabber.pid
 	else
 		msg_not_running jabberd
-		exit 1
 	fi
 }
 
@@ -90,7 +87,6 @@ stop_jabber_service() {
 		rm -f /var/lock/subsys/jabber-$SERVICE /var/run/jabber-$SERVICE.pid /var/lib/jabber/$SERVICE.pid
 	else
 		msg_not_running "jabber-$SERVICE"
-		return 1
 	fi
 }
 
@@ -100,7 +96,7 @@ jabber_status(){
 	# Test syntax.
 	if [ $# = 0 ] ; then
 		msg_usage "$0 status {subsys} [{service}]"
-		return 1
+		return 4
 	fi
 
 	service=$1
@@ -127,6 +123,7 @@ jabber_status(){
 	return 3
 }
 
+RETVAL=0
 # See how we were called.
 case "$1" in
   start)
@@ -145,7 +142,6 @@ case "$1" in
 		done
 	else
 		shift
-
 		for SERVICE in $* ; do
 			if [ "$SERVICE" = "jabber" ] ; then
 				start_main_jabberd
@@ -153,6 +149,7 @@ case "$1" in
 				start_jabber_service $SERVICE
 			else
 				show "%s is missing" "/etc/jabberd/${SERVICE}.xml"
+				RETVAL=6
 				fail
 			fi
 		done
@@ -190,15 +187,17 @@ case "$1" in
 			fi
 		fi
 	done
+	exit $?
 	;;
-  restart|reload)
+  restart|force-reload)
   	shift
 	$0 stop $*
 	$0 start $*
+	exit $?
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|reload|status} [service...]"
-	exit 1
+	msg_usage "$0 {start|stop|restart|force-reload|status} [service...]"
+	exit 3
 esac
 
-exit 0
+exit $RETVAL
