@@ -52,7 +52,7 @@ Patch20:	%{name}-mod_amp.patch
 #bcond oq
 Patch21:	http://www.marquard.net/jabber/patches/patch-sm-offline-quota
 #bcond bxmpp
-Patch21:	http://www.marquard.net/jabber/patches/patch-flash-v2
+Patch22:	http://www.marquard.net/jabber/patches/patch-flash-v2
 URL:		http://jabberd.jabberstudio.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
