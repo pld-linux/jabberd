@@ -83,7 +83,7 @@ protokó³ XMPP.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sbindir},/var/lib/%{name}/db,/var/run/jabber,/etc/{sysconfig,rc.d/init.d}}
+install -d $RPM_BUILD_ROOT{%{_sbindir},/var/lib/%{name}/db,/var/run/jabber,/etc/{sysconfig,rc.d/init.d},/var/log/jabberd}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -134,6 +134,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/*
 %dir %attr(770,root,jabber) /var/lib/%{name}
 %dir %attr(770,root,jabber) /var/lib/%{name}/db
+%dir %attr(770,root,jabber) /var/log/%{name}
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/%{name}
 %{_mandir}/man*/*
