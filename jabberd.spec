@@ -14,7 +14,7 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s6
-Release:	3.1
+Release:	4
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
@@ -53,6 +53,9 @@ Patch20:	%{name}-mod_amp.patch
 Patch21:	http://www.marquard.net/jabber/patches/patch-sm-offline-quota
 #bcond bxmpp
 Patch22:	http://www.marquard.net/jabber/patches/patch-flash-v2
+# Feature release :)
+Patch23:	http://www.marquard.net/jabber/patches/patch-doc-updates
+Patch24:	http://www.marquard.net/jabber/patches/patch-ldap-referral
 URL:		http://jabberd.jabberstudio.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -124,6 +127,8 @@ install %{SOURCE5} sm/
 %if %{with bxmpp}
 %patch22 -p0
 %endif
+%patch23 -p0
+%patch24 -p0
 
 %build
 %{__libtoolize}
