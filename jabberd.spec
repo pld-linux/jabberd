@@ -1,10 +1,10 @@
 #
 # Conditional build
-%bcond_without db	# - don't build db storage and authreg backends
-%bcond_without pgsql	# - don't build pgsql storage and authreg backends
-%bcond_without mysql	# - don't build mysql storage and authreg backends
-%bcond_without ldap	# - don't build ldap authreg backend
-
+%bcond_without	db	# - don't build db storage and authreg backends
+%bcond_without	pgsql	# - don't build pgsql storage and authreg backends
+%bcond_without	mysql	# - don't build mysql storage and authreg backends
+%bcond_without	ldap	# - don't build ldap authreg backend
+#
 %include	/usr/lib/rpm/macros.perl
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
@@ -33,7 +33,7 @@ BuildRequires:	libtool
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.1.0}
 BuildRequires:	openssl-devel >= 0.9.6b
 BuildRequires:	pam-devel
-%{!?_without_pgsql:BuildRequires:	postgresql-devel}
+%{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 PreReq:		rc-scripts
 Requires(pre):	/usr/bin/getgid
