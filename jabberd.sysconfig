@@ -1,0 +1,7 @@
+# Customized setings for maasd
+
+# Define jabberd command line options
+JABBERD_FLAGS=""
+
+# Define nice level for maasd 
+SERVICE_RUN_NICE_LEVEL="+5"

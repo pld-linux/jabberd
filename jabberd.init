@@ -1,0 +1,60 @@
+#!/bin/sh
+#
+# jabberd       This shell script takes care of starting and stopping
+#               jabberd (distributed messaging and presence system server).
+#
+# chkconfig:	345 80 10
+# description:	jabberd is the Jabber system server
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ "${NETWORKING}" = "no" ] && exit 0
+
+# Source maas configuration.
+. /etc/sysconfig/jabberd
+
+# See how we were called.
+case "$1" in
+  start)
+	# Check if the service is already running?
+        if [ ! -f /var/lock/subsys/jabberd ]; then
+            	msg_starting jabberd
+            	daemon su -s /bin/sh -c "\"exec /usr/sbin/jabberd $JABBERD_FLAGS &\"" jabber -
+        	RETVAL=$?
+		if [ $RETVAL -eq 0 ] ; then 
+			touch /var/lock/subsys/jabberd
+			ln -s /var/lib/jabber/jabber.pid /var/run/jabberd.pid
+		fi
+        else
+	      	msg_Already_Running jabberd
+		exit 1
+	fi
+        ;;
+  stop)
+  	if [ -f /var/lock/subsys/jabberd ]; then
+        	msg_stopping jabberd
+		killproc jabberd
+        	rm -f /var/lock/subsys/jabberd /var/run/jabberd.pid /var/lib/jabber/*.pid
+        else
+		msg_Not_Running jabberd
+		exit 1
+	fi
+	;;
+  status)
+	status jabberd
+	;;
+  restart|reload)
+	$0 stop
+	$0 start
+	;;
+  *)
+        echo "Usage: $0 {start|stop|restart|status}"
+        exit 1
+esac
+
+exit 0
