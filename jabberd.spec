@@ -5,7 +5,7 @@
 %bcond_without	mysql	# - don't build MySQL storage and authreg backends
 %bcond_without	ldap	# - don't build ldap authreg backend
 %bcond_without  sqlite	# - don't build SQLite v3 storage and authreg backends
-%bcond_without	oq	
+%bcond_without	oq
 # allows limiting the number of offline messages stored per user (mysql storage)
 # and allows offline storage (queuing) of subscription requests and/or messages
 # to be disabled
@@ -74,7 +74,7 @@ BuildRequires:	pam-devel
 %{?with_sqlite:BuildRequires:	sqlite3-devel}
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 PreReq:		rc-scripts
-PreReq: 	jabber-common
+PreReq:		jabber-common
 Requires(post):	textutils
 Requires(post):	/usr/bin/perl
 Requires(post,preun):	/sbin/chkconfig
@@ -135,7 +135,7 @@ install %{SOURCE5} sm/
 
 %build
 %{__libtoolize}
-%{__aclocal} 
+%{__aclocal}
 %{__autoconf}
 %{__autoheader}
 %{__automake}
@@ -198,15 +198,15 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS PROTOCOL README TODO
 %doc tools/{migrate.pl,db-setup.mysql,db-setup.pgsql,db-setup.sqlite,pipe-auth.pl}
-%attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabber/*.cfg
-%attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabber/*.xml
+%attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/*.cfg
+%attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/*.xml
 %dir %{_sysconfdir}/jabber/templates
-%attr(640,root,jabber) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/jabber/templates/*.xml
+%attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/templates/*.xml
 %attr(755,root,root) %{_sbindir}/*
 %dir %{_libdir}/jabberd
 %attr(755,root,root) %{_libdir}/%{name}/*
 %dir %attr(770,root,jabber) /var/lib/%{name}
 %dir %attr(770,root,jabber) /var/lib/%{name}/db
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/%{name}
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %{_mandir}/man*/*
