@@ -10,7 +10,7 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s6
-Release:	2.1
+Release:	2.2
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://www.jabberstudio.org/files/jabberd2/%{name}-%{version}.tar.gz
@@ -32,6 +32,9 @@ Patch9:		http://www.marquard.net/jabber/patches/patch-reconnect
 Patch10:	http://www.marquard.net/jabber/patches/patch-db-cleanup
 Patch11:	http://www.marquard.net/jabber/patches/patch-sm-db-fixup
 Patch12:	http://www.marquard.net/jabber/patches/patch-empty-jid-v2
+Patch13:	http://www.marquard.net/jabber/patches/patch-mod_session
+Patch14:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-85
+Patch15:	http://www.marquard.net/jabber/patches/patch-zzzzz-s2s-86
 URL:		http://jabberd.jabberstudio.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -77,6 +80,9 @@ protokó³ XMPP.
 %patch10 -p0
 %patch11 -p0
 %patch12 -p0
+%patch13 -p0
+%patch14 -p0
+%patch15 -p0
 
 %build
 %{__libtoolize}
