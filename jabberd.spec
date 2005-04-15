@@ -74,7 +74,7 @@ Nowoczesny, wolnodostêpny serwer Jabbera implementuj±cy najnowszy
 protokó³ XMPP.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
