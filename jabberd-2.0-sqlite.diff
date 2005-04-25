@@ -1,7 +1,7 @@
-diff -ur jabberd-2.0s6.orig/configure.in jabberd-2.0s6/configure.in
---- jabberd-2.0s6.orig/configure.in	2004-12-12 04:06:27.000000000 +0100
-+++ jabberd-2.0s6/configure.in	2004-12-24 23:17:16.691948352 +0100
-@@ -190,6 +190,22 @@
+diff -ur jabberd-2.0cvs.orig/configure.in jabberd-2.0cvs/configure.in
+--- jabberd-2.0cvs.orig/configure.in	Thu Apr 14 20:27:07 2005
++++ jabberd-2.0cvs/configure.in	Sat Apr 16 11:25:10 2005
+@@ -381,6 +381,22 @@
  fi
  
  
@@ -24,23 +24,23 @@ diff -ur jabberd-2.0s6.orig/configure.in jabberd-2.0s6/configure.in
  dnl berkeley db
  AC_ARG_ENABLE(db, AC_HELP_STRING([--enable-db], [enable Berkeley DB auth/reg/storage support (no)]),
                want_db=$enableval, want_db=no)
-diff -ur jabberd-2.0s6.orig/sm/Makefile.am jabberd-2.0s6/sm/Makefile.am
---- jabberd-2.0s6.orig/sm/Makefile.am	2004-04-08 08:51:23.000000000 +0200
-+++ jabberd-2.0s6/sm/Makefile.am	2004-12-24 23:13:36.245461312 +0100
-@@ -19,6 +19,7 @@
-              storage_fs.c \
+diff -ur jabberd-2.0cvs.orig/sm/Makefile.am jabberd-2.0cvs/sm/Makefile.am
+--- jabberd-2.0cvs.orig/sm/Makefile.am	Thu Apr 14 20:19:26 2005
++++ jabberd-2.0cvs/sm/Makefile.am	Sat Apr 16 11:24:33 2005
+@@ -20,6 +20,7 @@
               storage_mysql.c \
               storage_pgsql.c \
+ 	     storage_oracle.c \
 +             storage_sqlite.c \
               mod_active.c \
               mod_announce.c \
               mod_deliver.c \
-diff -ur jabberd-2.0s6.orig/sm/storage.c jabberd-2.0s6/sm/storage.c
---- jabberd-2.0s6.orig/sm/storage.c	2004-11-13 17:08:33.000000000 +0100
-+++ jabberd-2.0s6/sm/storage.c	2004-12-24 23:13:21.540696776 +0100
-@@ -45,6 +45,9 @@
- #ifdef STORAGE_PGSQL
- extern st_ret_t st_pgsql_init(st_driver_t);
+diff -ur jabberd-2.0cvs.orig/sm/storage.c jabberd-2.0cvs/sm/storage.c
+--- jabberd-2.0cvs.orig/sm/storage.c	Thu Apr 14 20:27:07 2005
++++ jabberd-2.0cvs/sm/storage.c	Sat Apr 16 11:24:00 2005
+@@ -48,6 +48,9 @@
+ #ifdef STORAGE_ORACLE
+ extern st_ret_t st_oracle_init(st_driver_t);
  #endif
 +#ifdef STORAGE_SQLITE
 +extern st_ret_t st_sqlite_init(st_driver_t);
@@ -48,9 +48,9 @@ diff -ur jabberd-2.0s6.orig/sm/storage.c jabberd-2.0s6/sm/storage.c
  
  static char *st_driver_names[] = {
  #ifdef STORAGE_DB
-@@ -59,6 +62,9 @@
- #ifdef STORAGE_PGSQL
-     "pgsql",
+@@ -65,6 +68,9 @@
+ #ifdef STORAGE_ORACLE
+     "oracle",
  #endif
 +#ifdef STORAGE_SQLITE
 +    "sqlite",
@@ -58,13 +58,13 @@ diff -ur jabberd-2.0s6.orig/sm/storage.c jabberd-2.0s6/sm/storage.c
      NULL
  };
  
-@@ -75,6 +81,9 @@
- #ifdef STORAGE_PGSQL
-     st_pgsql_init,
+@@ -83,6 +89,9 @@
  #endif
+ #ifdef STORAGE_ORACLE
+     st_oracle_init,
++#endif
 +#ifdef STORAGE_SQLITE
 +    st_sqlite_init,
-+#endif
+ #endif
      NULL
  };
- 
