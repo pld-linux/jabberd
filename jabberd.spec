@@ -16,12 +16,12 @@
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.0s7
+Version:	2.0s8
 Release:	1
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}.tar.gz
-# Source0-md5:	1f10641964d257944eae2f8f295cfcba
+# Source0-md5:	96753c5e74676ace0841a4cee9f13fdb
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 #bcond amp
@@ -84,7 +84,7 @@ protokó³ XMPP.
 
 %if %{with sqlite}
 %patch6 -p1
-%patch7 -p1
+%patch7 -p1 -b .wiget
 install %{SOURCE3} tools/
 install %{SOURCE4} sm/
 %endif
@@ -119,7 +119,7 @@ install %{SOURCE4} sm/
 	--enable-pipe \
 	--enable-pam \
 	%{?with_ldap:--enable-ldap} \
-	%{?with_mysql:--enable-sqlite} \
+	%{?with_sqlite:--enable-sqlite} \
 	%{?debug:--enable-debug}
 
 %{__make}

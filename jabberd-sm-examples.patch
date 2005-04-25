@@ -1,21 +1,11 @@
---- jabberd-2.0s6/etc/sm.xml.dist.in~	2005-01-07 10:24:47.628651464 +0100
-+++ jabberd-2.0s6/etc/sm.xml.dist.in	2005-01-07 10:33:17.303169160 +0100
-@@ -65,7 +65,8 @@
- 
-   <!-- Storage database configuration -->
-   <storage>
--    <!-- By default, we use the MySQL driver for all storage -->
-+    <!-- By default, we use the MySQL driver for all storage 
-+         You can type here: db, mysql, pgsql, sqlite -->
-     <driver>db</driver>
- 
-     <!-- Its also possible to explicitly list alternate drivers for
-@@ -127,6 +128,17 @@
-            be lost if jabberd crashes. -->
+--- jabberd-2.0s8/etc/sm.xml.dist.in.wiget	2005-04-25 21:10:23.000000000 +0200
++++ jabberd-2.0s8/etc/sm.xml.dist.in	2005-04-25 21:12:29.000000000 +0200
+@@ -129,6 +129,17 @@
        <sync/>
      </db>
-+    
-+     <sqlite>
+ 
++	<!-- SQLite driver configuration -->
++    <sqlite>
 +      <!-- Directory and filename of database -->
 +      <dbname>@localstatedir@/lib/jabberd/jabberd2.db</dbname>
 +
@@ -25,12 +15,10 @@
 +      <transactions/>
 +    </sqlite>
 +
-   </storage>
-   
-   <!-- Access control information -->
---- jabberd-2.0s6/etc/sm.xml.dist.in~	2005-03-11 06:42:32.895546640 +0100
-+++ jabberd-2.0s6/etc/sm.xml.dist.in	2005-03-11 06:48:50.324168768 +0100
-@@ -384,6 +384,17 @@
+     <!-- Oracle driver configuration -->
+     <oracle>
+       <!-- Database server host and port. -->
+@@ -387,6 +398,17 @@
      <auto-create/>
      -->
  
