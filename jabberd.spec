@@ -10,7 +10,7 @@
 # and allows offline storage (queuing) of subscription requests and/or messages
 # to be disabled
 %bcond_with	bxmpp	# - patches c2s to allow connections from Flash clients which don't use proper XMPP
-%bcond_with	avatars	# - add support to storage avatars
+%bcond_with	avatars	# - add support to storage avatars (obsolete)
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Jabber/XMPP server
