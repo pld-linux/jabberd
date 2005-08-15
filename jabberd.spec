@@ -17,7 +17,7 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s9
-Release:	0.1
+Release:	0.2
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}.tar.gz
@@ -25,16 +25,12 @@ Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 #bcond amp
-Source3:	http://svn.cmeerw.net/src/jabberd2/sqlite/tools/db-setup.sqlite
-Source4:	http://svn.cmeerw.net/src/jabberd2/sqlite/sm/storage_sqlite.c
 Patch0:		%{name}-perlscript.patch
 Patch1:		%{name}-daemonize.patch
 Patch2:		%{name}-default_config.patch
 Patch3:		%{name}-sysconfdir.patch
 Patch4:		%{name}-delay_jobs.patch
 Patch5:		%{name}-binary_path.patch
-Patch6:		http://svn.cmeerw.net/src/jabberd2/sqlite/%{name}-2.0-sqlite.diff
-Patch7:		%{name}-sm-examples.patch
 #bcond oq
 Patch21:	http://www.marquard.net/jabber/patches/patch-sm-offline-quota
 #bcond bxmpp
@@ -81,13 +77,6 @@ protokó³ XMPP.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-
-%if %{with sqlite}
-%patch6 -p1
-%patch7 -p1 -b .wiget
-install %{SOURCE3} tools/
-install %{SOURCE4} sm/
-%endif
 
 %if %{with oq}
 %patch21 -p0
