@@ -16,12 +16,12 @@
 Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.0s8
-Release:	1
+Version:	2.0s9
+Release:	0.1
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}.tar.gz
-# Source0-md5:	96753c5e74676ace0841a4cee9f13fdb
+# Source0-md5:	64905ccbbe5c6fe1f583401802a3e303
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 #bcond amp
