@@ -17,14 +17,14 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s9
-Release:	0.2
+Release:	0.3
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}.tar.gz
 # Source0-md5:	64905ccbbe5c6fe1f583401802a3e303
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
-#bcond amp
+Source3:	db-setup.sqlite	
 Patch0:		%{name}-perlscript.patch
 Patch1:		%{name}-daemonize.patch
 Patch2:		%{name}-default_config.patch
@@ -85,6 +85,8 @@ protokó³ XMPP.
 %if %{with bxmpp}
 %patch22 -p0
 %endif
+
+install %{SOURCE3} tools/
 
 %if %{with avatars}
 %patch25 -p1
