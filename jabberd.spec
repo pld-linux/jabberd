@@ -17,7 +17,7 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s10
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}.tar.gz
