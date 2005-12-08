@@ -41,7 +41,7 @@ case "$1" in
 	else
 		msg_not_running jabberd
 		exit 1
-	fi	
+	fi
         ;;
   restart)
         $0 stop
