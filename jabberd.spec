@@ -17,7 +17,7 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s10
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}.tar.gz
@@ -47,7 +47,7 @@ BuildRequires:	gettext-devel
 BuildRequires:	libidn-devel >= 0.3.0
 BuildRequires:	libtool
 %{?with_mysql:BuildRequires:	mysql-devel}
-%{?with_ldap:BuildRequires:	openldap-devel >= 2.1.0}
+%{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
 BuildRequires:	openssl-devel >= 0.9.6d
 BuildRequires:	pam-devel
 %{?with_pgsql:BuildRequires:	postgresql-devel}
