@@ -1,0 +1,32 @@
+diff -urN jabberd-2.0s10.org/c2s/authreg_mysql.c jabberd-2.0s10/c2s/authreg_mysql.c
+--- jabberd-2.0s10.org/c2s/authreg_mysql.c	2005-06-22 22:32:05.000000000 +0200
++++ jabberd-2.0s10/c2s/authreg_mysql.c	2006-02-16 08:33:03.376431944 +0100
+@@ -526,8 +526,10 @@
+         return 1;
+     }
+ 
+-    /* Set reconnect flag to 1 (set to 0 by default from mysql 5 on) */
+-    conn->reconnect = 1;
++    {
++	my_bool reconnect = 1;
++	mysql_options(conn, MYSQL_OPT_RECONNECT, (char *)&reconnect);
++    }
+ 
+     ar->user_exists = _ar_mysql_user_exists;
+     ar->get_password = _ar_mysql_get_password;
+diff -urN jabberd-2.0s10.org/sm/storage_mysql.c jabberd-2.0s10/sm/storage_mysql.c
+--- jabberd-2.0s10.org/sm/storage_mysql.c	2005-06-22 22:32:05.000000000 +0200
++++ jabberd-2.0s10/sm/storage_mysql.c	2006-02-16 08:32:55.702406728 +0100
+@@ -565,8 +565,10 @@
+         return st_FAILED;
+     }
+ 
+-    /* Set reconnect flag to 1 (set to 0 by default from mysql 5 on) */
+-    conn->reconnect = 1;
++    {
++	my_bool reconnect = 1;
++	mysql_options(conn, MYSQL_OPT_RECONNECT, (char *)&reconnect);
++    }
+ 
+     data = (drvdata_t) malloc(sizeof(struct drvdata_st));
+     memset(data, 0, sizeof(struct drvdata_st));
