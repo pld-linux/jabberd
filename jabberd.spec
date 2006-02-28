@@ -24,7 +24,7 @@ Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}.tar.gz
 # Source0-md5:	e8df4a9a5680009071204d423cff2de0
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
-Source3:	db-setup.sqlite	
+Source3:	db-setup.sqlite
 Patch0:		%{name}-perlscript.patch
 Patch1:		%{name}-daemonize.patch
 Patch2:		%{name}-default_config.patch
@@ -52,14 +52,13 @@ BuildRequires:	libtool
 BuildRequires:	openssl-devel >= 0.9.6d
 BuildRequires:	pam-devel
 %{?with_pgsql:BuildRequires:	postgresql-devel}
-%{?with_sqlite:BuildRequires:	sqlite3-devel}
 BuildRequires:	rpm-perlprov >= 3.0.3-16
-PreReq:		rc-scripts
-PreReq:		jabber-common
-Requires(post):	textutils
+%{?with_sqlite:BuildRequires:	sqlite3-devel}
 Requires(post):	/usr/bin/perl
+Requires(post):	textutils
 Requires(post,preun):	/sbin/chkconfig
 Requires:	jabber-common
+Requires:	rc-scripts
 Obsoletes:	jabber
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
