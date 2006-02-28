@@ -1,0 +1,2 @@
+- jabberd-delay_jobs.patch: wait between starting each jabberd component
+  so router is always started before any other
