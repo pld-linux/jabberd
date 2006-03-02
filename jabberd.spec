@@ -53,8 +53,9 @@ BuildRequires:	openssl-devel >= 0.9.6d
 BuildRequires:	pam-devel
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpm-perlprov >= 3.0.3-16
+BuildRequires:	rpmbuild(macros) >= 1.268
 %{?with_sqlite:BuildRequires:	sqlite3-devel}
-Requires(post):	/usr/bin/perl
+Requires(post):	sed >= 4.0
 Requires(post):	textutils
 Requires(post,preun):	/sbin/chkconfig
 Requires:	jabber-common
@@ -133,20 +134,16 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ -f /etc/jabber/secret ] ; then
-	SECRET=`cat /etc/jabber/secret`
+if [ -f %{_sysconfdir}/jabber/secret ] ; then
+	SECRET=`cat %{_sysconfdir}/jabber/secret`
 	if [ -n "$SECRET" ] ; then
 		echo "Updating component authentication secret in Jabberd config files..."
-		perl -pi -e "s/>secret</>$SECRET</" /etc/jabber/*.xml
+		%{__sed} -i -e "s/>secret</>$SECRET</" %{_sysconfdir}/jabber/*.xml
 	fi
 fi
 
 /sbin/chkconfig --add jabberd
-if [ -r /var/lock/subsys/jabberd ]; then
-	/etc/rc.d/init.d/jabberd restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/jabberd start\" to start Jabber server."
-fi
+%service jabberd restart "Jabber server"
 
 %if %{with avatars}
 echo "This j2 package has new functionality, please read AVATARS file."
@@ -154,9 +151,7 @@ echo "This j2 package has new functionality, please read AVATARS file."
 
 %preun
 if [ "$1" = "0" ]; then
-	if [ -r /var/lock/subsys/jabberd ]; then
-		/etc/rc.d/init.d/jabberd stop >&2
-	fi
+	%service jabberd stop
 	/sbin/chkconfig --del jabberd
 fi
 
