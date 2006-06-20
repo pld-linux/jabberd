@@ -17,7 +17,7 @@ Summary:	Jabber/XMPP server
 Summary(pl):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s11
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}.tar.gz
@@ -32,6 +32,7 @@ Patch3:		%{name}-sysconfdir.patch
 Patch4:		%{name}-delay_jobs.patch
 Patch5:		%{name}-binary_path.patch
 Patch6:		%{name}-reconnect.patch
+Patch7:		http://staff.xiaoka.com/smoku/stuff/Jabber/jabberd2/jabberd2-presence-handling.patch
 #bcond oq
 Patch21:	http://www.marquard.net/jabber/patches/patch-sm-offline-quota
 #bcond bxmpp
@@ -79,6 +80,7 @@ protokó³ XMPP.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p0
 
 %if %{with oq}
 %patch21 -p0
