@@ -1,3 +1,0 @@
-# Nice level for jabberd
-SERVICE_RUN_NICE_LEVEL="+0"
-
