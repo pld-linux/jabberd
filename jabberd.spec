@@ -32,9 +32,10 @@ Patch3:		%{name}-sysconfdir.patch
 Patch4:		%{name}-delay_jobs.patch
 Patch5:		%{name}-binary_path.patch
 Patch6:		%{name}-reconnect.patch
-Patch7:		http://staff.xiaoka.com/smoku/stuff/Jabber/jabberd2/jabberd2-presence-handling.patch
-#bcond oq
-Patch21:	http://www.marquard.net/jabber/patches/patch-sm-offline-quota
+# http://staff.xiaoka.com/smoku/stuff/Jabber/jabberd2/jabberd2-presence-handling.patch
+Patch7:		%{name}2-presence-handling.patch
+#bcond oq, http://www.marquard.net/jabber/patches/patch-sm-offline-quota
+Patch21:	patch-sm-offline-quota
 #bcond bxmpp
 Patch22:	http://www.marquard.net/jabber/patches/patch-flash-v2
 # avatars
