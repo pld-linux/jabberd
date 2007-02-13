@@ -14,7 +14,7 @@
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Jabber/XMPP server
-Summary(pl.UTF-8):   Serwer Jabber/XMPP
+Summary(pl.UTF-8):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.0s11
 Release:	2
