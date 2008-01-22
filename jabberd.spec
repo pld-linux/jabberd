@@ -16,26 +16,21 @@
 Summary:	Jabber/XMPP server
 Summary(pl.UTF-8):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.0s11
-Release:	2
+Version:	2.1.22
+Release:	0.1
 License:	GPL
 Group:		Applications/Communications
-Source0:	http://files.jabberstudio.org/jabberd2/%{name}-%{version}.tar.gz
-# Source0-md5:	67d1663ed97a5ba707d5d145b1d19c55
+Source0:	http://ftp.xiaoka.com/jabberd2/releases/%{name}-%{version}.tar.bz2
+# Source0-md5:	16e2e5b8732352b12d691c67b84eebad
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	db-setup.sqlite
 Patch0:		%{name}-perlscript.patch
 Patch1:		%{name}-daemonize.patch
 Patch2:		%{name}-default_config.patch
-Patch3:		%{name}-sysconfdir.patch
 Patch4:		%{name}-delay_jobs.patch
 Patch5:		%{name}-binary_path.patch
 Patch6:		%{name}-reconnect.patch
-# http://staff.xiaoka.com/smoku/stuff/Jabber/jabberd2/jabberd2-presence-handling.patch
-Patch7:		%{name}2-presence-handling.patch
-#bcond oq, http://www.marquard.net/jabber/patches/patch-sm-offline-quota
-Patch21:	patch-sm-offline-quota
 #bcond bxmpp
 Patch22:	http://www.marquard.net/jabber/patches/patch-flash-v2
 # avatars
@@ -50,13 +45,14 @@ BuildRequires:	gettext-devel
 BuildRequires:	libidn-devel >= 0.3.0
 BuildRequires:	libtool
 %{?with_mysql:BuildRequires:	mysql-devel}
-%{?with_ldap:BuildRequires:	openldap-devel >= 2.4.6}
+%{?with_ldap:BuildRequires:	openldap-devel}
 BuildRequires:	openssl-devel >= 0.9.6d
 BuildRequires:	pam-devel
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 BuildRequires:	rpmbuild(macros) >= 1.268
 %{?with_sqlite:BuildRequires:	sqlite3-devel}
+BuildRequires:	gsasl-devel
 Requires(post):	sed >= 4.0
 Requires(post):	textutils
 Requires(post,preun):	/sbin/chkconfig
@@ -77,15 +73,9 @@ protokół XMPP.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
-%patch7 -p0
-
-%if %{with oq}
-%patch21 -p0
-%endif
 
 %if %{with bxmpp}
 %patch22 -p0
@@ -107,6 +97,7 @@ install %{SOURCE3} tools/
 %{__automake}
 %configure \
 	--bindir="%{_libdir}/%{name}" \
+	--sysconfdir="%{_sysconfdir}/jabber" \
 	%{?with_db:--enable-db} \
 	%{!?with_mysql:--disable-mysql} \
 	%{?with_pgsql:--enable-pgsql} \
