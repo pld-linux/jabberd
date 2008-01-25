@@ -16,7 +16,7 @@ Summary:	Jabber/XMPP server
 Summary(pl.UTF-8):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.1.22
-Release:	0.1
+Release:	0.2
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://ftp.xiaoka.com/jabberd2/releases/%{name}-%{version}.tar.bz2
@@ -98,7 +98,7 @@ install %{SOURCE3} tools/
 	--bindir="%{_libdir}/%{name}" \
 	--sysconfdir="%{_sysconfdir}/jabber" \
 	%{?with_db:--enable-db} \
-	%{!?with_mysql:--disable-mysql} \
+	%{?with_mysql:--enable-mysql} \
 	%{?with_pgsql:--enable-pgsql} \
 	--enable-fs \
 	--enable-anon \
