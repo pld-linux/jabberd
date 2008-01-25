@@ -5,7 +5,6 @@
 %bcond_without	mysql	# - don't build MySQL storage and authreg backends
 %bcond_without	ldap	# - don't build ldap authreg backend
 %bcond_without	sqlite	# - don't build SQLite v3 storage backend
-%bcond_without	oq
 # allows limiting the number of offline messages stored per user (mysql storage)
 # and allows offline storage (queuing) of subscription requests and/or messages
 # to be disabled
@@ -42,6 +41,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 %{?with_db:BuildRequires:	db-devel >= 4.1.24}
 BuildRequires:	gettext-devel
+BuildRequires:	gsasl-devel
 BuildRequires:	libidn-devel >= 0.3.0
 BuildRequires:	libtool
 %{?with_mysql:BuildRequires:	mysql-devel}
@@ -52,7 +52,6 @@ BuildRequires:	pam-devel
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 BuildRequires:	rpmbuild(macros) >= 1.268
 %{?with_sqlite:BuildRequires:	sqlite3-devel}
-BuildRequires:	gsasl-devel
 Requires(post):	sed >= 4.0
 Requires(post):	textutils
 Requires(post,preun):	/sbin/chkconfig
