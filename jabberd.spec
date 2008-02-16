@@ -9,18 +9,17 @@
 # and allows offline storage (queuing) of subscription requests and/or messages
 # to be disabled
 %bcond_with	bxmpp	# - patches c2s to allow connections from Flash clients which don't use proper XMPP
-%bcond_with	avatars	# - add support to storage avatars (obsolete)
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Jabber/XMPP server
 Summary(pl.UTF-8):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.1.22
+Version:	2.1.23
 Release:	1
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://ftp.xiaoka.com/jabberd2/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	16e2e5b8732352b12d691c67b84eebad
+# Source0-md5:	f556a1645a993c837738025077e1961f
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	db-setup.sqlite
@@ -32,10 +31,6 @@ Patch5:		%{name}-binary_path.patch
 Patch6:		%{name}-reconnect.patch
 #bcond bxmpp
 Patch22:	http://www.marquard.net/jabber/patches/patch-flash-v2
-# avatars
-#http://j2.openaether.org/bugzilla/attachment.cgi?id=23&action=diff&context=patch&collapsed=&headers=1&format=raw
-Patch25:	%{name}-mod_iq_vcard.patch
-Patch26:	%{name}-avatars.patch
 URL:		http://jabberd.jabberstudio.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -81,11 +76,6 @@ protokół XMPP.
 %endif
 
 install %{SOURCE3} tools/
-
-%if %{with avatars}
-%patch25 -p1
-%patch26 -p1
-%endif
 
 %build
 #http://j2.openaether.org/bugzilla/show_bug.cgi?id=17
@@ -150,7 +140,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS PROTOCOL README TODO %{?with_avatars:AVATARS}
+%doc AUTHORS ChangeLog NEWS README TODO
 %doc tools/{migrate.pl,db-setup.mysql,db-setup.pgsql,%{?with_sqlite:db-setup.sqlite,}pipe-auth.pl}
 %attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/*.cfg
 %attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/*.xml
