@@ -1,10 +1,10 @@
 #
 # Conditional build
-%bcond_without	db	# - don't build db storage and authreg backends
-%bcond_without	pgsql	# - don't build PostgreSQL storage and authreg backends
-%bcond_without	mysql	# - don't build MySQL storage and authreg backends
-%bcond_without	ldap	# - don't build ldap authreg backend
-%bcond_without	sqlite	# - don't build SQLite v3 storage backend
+%bcond_without	db	# don't build db storage and authreg backends
+%bcond_without	ldap	# don't build ldap authreg backend
+%bcond_without	mysql	# don't build MySQL storage and authreg backends
+%bcond_without	pgsql	# don't build PostgreSQL storage and authreg backends
+%bcond_without	sqlite	# don't build SQLite v3 storage backend
 # allows limiting the number of offline messages stored per user (mysql storage)
 # and allows offline storage (queuing) of subscription requests and/or messages
 # to be disabled
@@ -14,12 +14,12 @@
 Summary:	Jabber/XMPP server
 Summary(pl.UTF-8):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.1.24.1
-Release:	1
+Version:	2.2.0
+Release:	0.1
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://ftp.xiaoka.com/jabberd2/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	f115e9dd48ef4ef5706c47979a80942e
+# Source0-md5:	b5b0b1098c6d87e6ecf2ebfd9d0dfc9a
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	db-setup.sqlite
@@ -36,8 +36,9 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 %{?with_db:BuildRequires:	db-devel >= 4.1.24}
 BuildRequires:	gettext-devel
-BuildRequires:	gsasl-devel
+BuildRequires:	gsasl-devel >= 0.2.26
 BuildRequires:	libidn-devel >= 0.3.0
+BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_ldap:BuildRequires:	openldap-devel}
@@ -47,6 +48,7 @@ BuildRequires:	pam-devel
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 BuildRequires:	rpmbuild(macros) >= 1.268
 %{?with_sqlite:BuildRequires:	sqlite3-devel}
+BuildRequires:	udns-devel
 Requires(post):	sed >= 4.0
 Requires(post):	textutils
 Requires(post,preun):	/sbin/chkconfig
@@ -102,7 +104,7 @@ install %{SOURCE3} tools/
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sbindir},/var/lib/%{name}/db,/var/run/jabber,/etc/{sysconfig,rc.d/init.d}}
+install -d $RPM_BUILD_ROOT{%{_sbindir},/var/lib/%{name}/{db,stats},/var/run/jabber,/etc/{sysconfig,rc.d/init.d}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -151,6 +153,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/*
 %dir %attr(770,root,jabber) /var/lib/%{name}
 %dir %attr(770,root,jabber) /var/lib/%{name}/db
+%dir %attr(770,root,jabber) /var/lib/%{name}/stats
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %{_mandir}/man*/*
