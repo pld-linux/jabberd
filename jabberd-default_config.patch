@@ -18,6 +18,15 @@
      -->
    </log>
  
+@@ -284,7 +284,7 @@
+   <stats>
+     <!-- file containing count of packets that went through -->
+     <!--
+-    <packet>@localstatedir@/jabberd/stats/c2s.packets</packet>
++    <packet>@localstatedir@/lib/jabberd/stats/c2s.packets</packet>
+     -->
+   </stats>
+ 
 @@ -292,7 +292,7 @@
      <path>@pkglibdir@</path>
  
@@ -59,26 +68,6 @@
 +# and proper SRV records are set in DNS uncoment this to enable communication
 +# with other Jabber servers
 +#@jabberd_s2s_bin@         @sysconfdir@/s2s.xml
---- jabberd-2.1.22/etc/resolver.xml.dist.in.orig	2008-01-21 16:17:03.000000000 +0100
-+++ jabberd-2.1.22/etc/resolver.xml.dist.in	2008-01-22 14:33:06.000000000 +0100
-@@ -5,7 +5,7 @@
- 
-   <!-- The process ID file. Comment this out if you don't need to know
-        the process ID from outside the process (eg for control scripts) -->
--  <pidfile>@localstatedir@/jabberd/pid/resolver.pid</pidfile>
-+  <pidfile>@localstatedir@/run/jabber/resolver.pid</pidfile>
- 
-   <!-- Router connection configuration -->
-   <router>
-@@ -60,7 +60,7 @@
- 
-     <!-- If logging to file, this is the filename of the logfile -->
-     <!--
--    <file>@localstatedir@/jabberd/log/resolver.log</file>
-+    <file>@localstatedir@/log/jabberd/resolver.log</file>
-     -->
-   </log>
- 
 --- jabberd-2.1.22/etc/router.xml.dist.in.orig	2008-01-21 16:17:03.000000000 +0100
 +++ jabberd-2.1.22/etc/router.xml.dist.in	2008-01-22 14:33:34.000000000 +0100
 @@ -5,7 +5,7 @@
@@ -136,6 +125,15 @@
 +    <file>@localstatedir@/log/jabberd/s2s.log</file>
      -->
    </log>
+ 
+@@ -202,7 +202,7 @@
+   <stats>
+     <!-- file containing count of packets that went through -->
+     <!--
+-    <packet>@localstatedir@/jabberd/stats/s2s.packets</packet>
++    <packet>@localstatedir@/lib/jabberd/stats/s2s.packets</packet>
+     -->
+   </stats>
  
 --- jabberd-2.1.22/etc/sm.xml.dist.in.orig	2008-01-21 16:17:03.000000000 +0100
 +++ jabberd-2.1.22/etc/sm.xml.dist.in	2008-01-22 14:37:53.000000000 +0100
