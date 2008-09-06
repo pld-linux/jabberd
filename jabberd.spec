@@ -14,12 +14,12 @@
 Summary:	Jabber/XMPP server
 Summary(pl.UTF-8):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.2.2
+Version:	2.2.4
 Release:	0.1
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://ftp.xiaoka.com/jabberd2/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	807a1be895cebf50f2105ffbb1fcf91b
+# Source0-md5:	91d5bc46063c50da49b81d7b7ea0bbab
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	db-setup.sqlite
@@ -36,7 +36,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 %{?with_db:BuildRequires:	db-devel >= 4.1.24}
 BuildRequires:	gettext-devel
-BuildRequires:	gsasl-devel >= 0.2.26
+BuildRequires:	gsasl-devel >= 0.2.28
 BuildRequires:	libidn-devel >= 0.3.0
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
