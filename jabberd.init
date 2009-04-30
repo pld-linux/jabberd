@@ -21,7 +21,7 @@ case "$1" in
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/jabberd ]; then
 		msg_starting jabberd
-		daemon jabberd
+		daemon /usr/sbin/jabberd
 		RETVAL=$?
 		if [ $RETVAL -eq 0 ]; then
 			touch /var/lock/subsys/jabberd
