@@ -31,7 +31,7 @@
      <path>@pkglibdir@</path>
  
      <!-- Backend module to use -->
--    <module>mysql</module>
+-    <module>sqlite</module>
 +    <module>db</module>
  
      <!-- Available authentication mechanisms -->
@@ -158,22 +158,13 @@
 @@ -73,7 +73,7 @@
      <path>@pkglibdir@</path>
  
-     <!-- By default, we use the MySQL driver for all storage -->
--    <driver>mysql</driver>
+     <!-- By default, we use the SQLite driver for all storage -->
+-    <driver>sqlite</driver>
 +    <driver>db</driver>
  
      <!-- Its also possible to explicitly list alternate drivers for
           specific data types. -->
-@@ -152,7 +152,7 @@
-     <!-- Berkeley DB driver configuration -->
-     <db>
-       <!-- Directory to store database files under -->
--      <path>@localstatedir@/jabberd/db</path>
-+      <path>@localstatedir@/lib/jabberd/db</path>
- 
-       <!-- Synchronize the database to disk after each write. If you
-            disable this, database accesses may be faster, but data may
-@@ -177,7 +177,7 @@
+@@ -114,7 +114,7 @@
      <!-- SQLite driver configuration -->
      <sqlite>
        <!-- Database name -->
@@ -182,6 +173,15 @@
  
        <!-- Transacation support. If this is commented out, transactions
             will be disabled. This might make database accesses faster,
+@@ -181,7 +181,7 @@
+     <!-- Berkeley DB driver configuration -->
+     <db>
+       <!-- Directory to store database files under -->
+-      <path>@localstatedir@/jabberd/db</path>
++      <path>@localstatedir@/lib/jabberd/db</path>
+ 
+       <!-- Synchronize the database to disk after each write. If you
+            disable this, database accesses may be faster, but data may
 @@ -532,6 +532,8 @@
      </serverinfo>
      -->
