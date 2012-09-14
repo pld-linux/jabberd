@@ -16,12 +16,12 @@
 Summary:	Jabber/XMPP server
 Summary(pl.UTF-8):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.2.9
-Release:	4
+Version:	2.2.14
+Release:	1
 License:	GPL
 Group:		Applications/Communications
 Source0:	http://ftp.xiaoka.com/jabberd2/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	bfc0fa473c2a453fcbba4f95f28c5d70
+# Source0-md5:	e03edad18aebaa7292c422ef476cdd53
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	db-setup.sqlite
@@ -107,13 +107,17 @@ install %{SOURCE3} tools/
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sbindir},/var/lib/%{name}/{db,stats},/var/run/jabber,/etc/{sysconfig,rc.d/init.d}}
+install -d $RPM_BUILD_ROOT{%{_sbindir},/var/lib/%{name}/{db,stats},/etc/{sysconfig,rc.d/init.d}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 mv $RPM_BUILD_ROOT%{_libdir}/jabberd/jabberd $RPM_BUILD_ROOT%{_sbindir}
-rm $RPM_BUILD_ROOT%{_sysconfdir}/jabber{,/templates}/*.dist
+%{__rm} $RPM_BUILD_ROOT%{_sysconfdir}/jabber{,/templates}/*.dist 
+
+# drop Upstart configuration files
+%{__rm} -f $RPM_BUILD_ROOT%{_sysconfdir}/jabber/*.conf 
+%{__rm} -f $RPM_BUILD_ROOT%{_prefix}/etc/init/*.conf
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
@@ -146,7 +150,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README TODO
-%doc tools/{migrate.pl,db-setup.mysql,db-setup.pgsql,%{?with_sqlite:db-setup.sqlite,}pipe-auth.pl}
+%doc tools/{db-setup.mysql,db-setup.pgsql,%{?with_sqlite:db-setup.sqlite,}pipe-auth.pl}
 %attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/*.cfg
 %attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/*.xml
 %dir %{_sysconfdir}/jabber/templates
