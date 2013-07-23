@@ -1,9 +1,10 @@
---- jabberd-2.1.22/tools/jabberd.in.orig	2008-01-22 14:47:39.000000000 +0100
-+++ jabberd-2.1.22/tools/jabberd.in	2008-01-22 14:49:32.000000000 +0100
-@@ -146,6 +146,7 @@
+diff -ur jabberd-2.2.17.orig/tools/jabberd.in jabberd-2.2.17/tools/jabberd.in
+--- jabberd-2.2.17.orig/tools/jabberd.in	2013-07-23 16:52:28.000000000 +0000
++++ jabberd-2.2.17/tools/jabberd.in	2013-07-23 17:39:02.619178938 +0000
+@@ -148,6 +148,7 @@
  foreach my $job (@programs)
  {
-     &LaunchJob($job->[0],$job->[1]);
+     &LaunchJob($job->[0],$job->[1],$job->[2]);
 +    sleep(1);
  }
  
