@@ -10,18 +10,18 @@
 # to be disabled
 %bcond_with	bxmpp	# - patches c2s to allow connections from Flash clients which don't use proper XMPP
 
-%define		skip_post_check_so	mod_.*.so.0.0.0
+%define		skip_post_check_so	mod_.*.so.0.0.0 libstorage.so.0.0.0
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Jabber/XMPP server
 Summary(pl.UTF-8):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.2.14
-Release:	2
+Version:	2.2.17
+Release:	0.1
 License:	GPL
 Group:		Applications/Communications
-Source0:	http://ftp.xiaoka.com/jabberd2/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	e03edad18aebaa7292c422ef476cdd53
+Source0:	https://github.com/downloads/jabberd2/jabberd2/%{name}-%{version}.tar.xz
+# Source0-md5:	8b7d654deaa6566e58ab6630112f9b10
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	db-setup.sqlite
