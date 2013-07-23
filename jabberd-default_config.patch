@@ -1,33 +1,40 @@
---- jabberd-2.1.22/etc/c2s.xml.dist.in.orig	2008-01-21 16:17:03.000000000 +0100
-+++ jabberd-2.1.22/etc/c2s.xml.dist.in	2008-01-22 14:38:12.000000000 +0100
+diff -ur jabberd-2.2.17.orig/etc/c2s.xml.dist.in jabberd-2.2.17/etc/c2s.xml.dist.in
+--- jabberd-2.2.17.orig/etc/c2s.xml.dist.in	2012-05-22 20:27:51.000000000 +0000
++++ jabberd-2.2.17/etc/c2s.xml.dist.in	2013-07-23 17:06:14.939179197 +0000
 @@ -5,7 +5,7 @@
  
    <!-- The process ID file. Comment this out if you don't need to know
         the process ID from outside the process (eg for control scripts) -->
--  <pidfile>@localstatedir@/jabberd/pid/c2s.pid</pidfile>
+-  <pidfile>@localstatedir@/@package@/pid/c2s.pid</pidfile>
 +  <pidfile>@localstatedir@/run/jabber/c2s.pid</pidfile>
  
    <!-- Router connection configuration -->
    <router>
-@@ -60,7 +60,7 @@
+@@ -60,12 +60,12 @@
  
      <!-- If logging to file, this is the filename of the logfile -->
      <!--
--    <file>@localstatedir@/jabberd/log/c2s.log</file>
+-    <file>@localstatedir@/@package@/log/c2s.log</file>
 +    <file>@localstatedir@/log/jabberd/c2s.log</file>
+     -->
+ 
+     <!-- Filename of the debug logfile -->
+     <!--
+-    <debug>@localstatedir@/@package@/log/debug-${id}.log</debug>
++    <debug>@localstatedir@/log/jabberd/debug-${id}.log</debug>
      -->
    </log>
  
-@@ -284,7 +284,7 @@
+@@ -334,7 +334,7 @@
    <stats>
      <!-- file containing count of packets that went through -->
      <!--
--    <packet>@localstatedir@/jabberd/stats/c2s.packets</packet>
+-    <packet>@localstatedir@/@package@/stats/c2s.packets</packet>
 +    <packet>@localstatedir@/lib/jabberd/stats/c2s.packets</packet>
      -->
    </stats>
  
-@@ -292,7 +292,7 @@
+@@ -370,7 +370,7 @@
      <path>@pkglibdir@</path>
  
      <!-- Backend module to use -->
@@ -36,67 +43,75 @@
  
      <!-- Available authentication mechanisms -->
      <mechanisms>
-@@ -391,7 +391,7 @@
+@@ -421,7 +421,7 @@
      <!-- SQLite driver configuration -->
      <sqlite>
        <!-- Database name -->
--      <dbname>@localstatedir@/jabberd/db/sqlite.db</dbname>
+-      <dbname>@localstatedir@/@package@/db/sqlite.db</dbname>
 +      <dbname>@localstatedir@/lib/jabberd/sqlite.db</dbname>
  
        <!-- Transacation support. If this is commented out, transactions
             will be disabled. This might make database accesses faster,
-@@ -405,7 +405,7 @@
+@@ -502,7 +502,7 @@
      <!-- Berkeley DB module configuration -->
      <db>
        <!-- Directory to store database files under -->
--      <path>@localstatedir@/jabberd/db</path>
+-      <path>@localstatedir@/@package@/db</path>
 +      <path>@localstatedir@/lib/jabberd/db</path>
  
        <!-- Synchronize the database to disk after each write. If you
             disable this, database accesses may be faster, but data may
---- jabberd-2.1.22/etc/jabberd.cfg.dist.in.orig	2008-01-22 14:17:57.000000000 +0100
-+++ jabberd-2.1.22/etc/jabberd.cfg.dist.in	2008-01-22 14:17:57.000000000 +0100
-@@ -15,5 +15,10 @@
+diff -ur jabberd-2.2.17.orig/etc/jabberd.cfg.dist.in jabberd-2.2.17/etc/jabberd.cfg.dist.in
+--- jabberd-2.2.17.orig/etc/jabberd.cfg.dist.in	2012-05-04 16:24:36.000000000 +0000
++++ jabberd-2.2.17/etc/jabberd.cfg.dist.in	2013-07-23 16:58:45.510179289 +0000
+@@ -14,5 +14,9 @@
+ 
  @jabberd_router_bin@      @sysconfdir@/router.xml
- @jabberd_resolver_bin@    @sysconfdir@/resolver.xml
  @jabberd_sm_bin@          @sysconfdir@/sm.xml
 -@jabberd_s2s_bin@         @sysconfdir@/s2s.xml
  @jabberd_c2s_bin@         @sysconfdir@/c2s.xml
-+
 +
 +# After sm and c2s are configured to use a fully qualified domain name
 +# and proper SRV records are set in DNS uncoment this to enable communication
 +# with other Jabber servers
 +#@jabberd_s2s_bin@         @sysconfdir@/s2s.xml
---- jabberd-2.1.22/etc/router.xml.dist.in.orig	2008-01-21 16:17:03.000000000 +0100
-+++ jabberd-2.1.22/etc/router.xml.dist.in	2008-01-22 14:33:34.000000000 +0100
+diff -ur jabberd-2.2.17.orig/etc/router.xml.dist.in jabberd-2.2.17/etc/router.xml.dist.in
+--- jabberd-2.2.17.orig/etc/router.xml.dist.in	2012-05-04 16:24:36.000000000 +0000
++++ jabberd-2.2.17/etc/router.xml.dist.in	2013-07-23 17:00:56.309179075 +0000
 @@ -5,7 +5,7 @@
  
    <!-- The process ID file. Comment this out if you don't need to know
         the process ID from outside the process (eg for control scripts) -->
--  <pidfile>@localstatedir@/jabberd/pid/router.pid</pidfile>
+-  <pidfile>@localstatedir@/@package@/pid/router.pid</pidfile>
 +  <pidfile>@localstatedir@/run/jabber/router.pid</pidfile>
  
    <!-- Log configuration - type is "syslog", "file" or "stdout" -->
    <log type='syslog'>
-@@ -18,14 +18,14 @@
+@@ -18,19 +18,19 @@
  
      <!-- If logging to file, this is the filename of the logfile -->
      <!--
--    <file>@localstatedir@/jabberd/log/router.log</file>
+-    <file>@localstatedir@/@package@/log/router.log</file>
 +    <file>@localstatedir@/log/jabberd/router.log</file>
+     -->
+ 
+     <!-- Filename of the debug logfile -->
+     <!--
+-    <debug>@localstatedir@/@package@/log/debug-${id}.log</debug>
++    <debug>@localstatedir@/log/jabberd/debug-${id}.log</debug>
      -->
    </log>
  
    <!-- Local network configuration -->
    <local>
-     <!-- IP address to bind to (default: 0.0.0.0) -->
+-    <!-- IP address to bind to (default: 0.0.0.0) -->
 -    <ip>0.0.0.0</ip>
++    <!-- IP address to bind to (default: 127.0.0.1) -->
 +    <ip>127.0.0.1</ip>
  
      <!-- Port to bind to (default: 5347) -->
      <port>5347</port>
-@@ -152,6 +152,9 @@
+@@ -164,6 +164,9 @@
      <!--
      <alias name='conference.domain.com' target='muclinker'/>
      -->
@@ -106,56 +121,70 @@
    </aliases>
  
    <!-- Access control information -->
---- jabberd-2.1.22/etc/s2s.xml.dist.in.orig	2008-01-21 16:17:03.000000000 +0100
-+++ jabberd-2.1.22/etc/s2s.xml.dist.in	2008-01-22 14:33:51.000000000 +0100
+diff -ur jabberd-2.2.17.orig/etc/s2s.xml.dist.in jabberd-2.2.17/etc/s2s.xml.dist.in
+--- jabberd-2.2.17.orig/etc/s2s.xml.dist.in	2012-08-06 18:18:46.000000000 +0000
++++ jabberd-2.2.17/etc/s2s.xml.dist.in	2013-07-23 17:04:54.683054085 +0000
 @@ -5,7 +5,7 @@
  
    <!-- The process ID file. Comment this out if you don't need to know
         the process ID from outside the process (eg for control scripts) -->
--  <pidfile>@localstatedir@/jabberd/pid/s2s.pid</pidfile>
+-  <pidfile>@localstatedir@/@package@/pid/s2s.pid</pidfile>
 +  <pidfile>@localstatedir@/run/jabber/s2s.pid</pidfile>
  
    <!-- Router connection configuration -->
    <router>
-@@ -70,7 +70,7 @@
+@@ -70,12 +70,12 @@
  
      <!-- if logging to file, this is the filename of the logfile -->
      <!--
--    <file>@localstatedir@/jabberd/log/s2s.log</file>
+-    <file>@localstatedir@/@package@/log/s2s.log</file>
 +    <file>@localstatedir@/log/jabberd/s2s.log</file>
+     -->
+ 
+     <!-- Filename of the debug logfile -->
+     <!--
+-    <debug>@localstatedir@/@package@/log/debug-${id}.log</debug>
++    <debug>@localstatedir@/log/jabberd/debug-${id}.log</debug>
      -->
    </log>
  
-@@ -202,7 +202,7 @@
+@@ -240,7 +240,7 @@
    <stats>
      <!-- file containing count of packets that went through -->
      <!--
--    <packet>@localstatedir@/jabberd/stats/s2s.packets</packet>
+-    <packet>@localstatedir@/@package@/stats/s2s.packets</packet>
 +    <packet>@localstatedir@/lib/jabberd/stats/s2s.packets</packet>
      -->
    </stats>
  
---- jabberd-2.1.22/etc/sm.xml.dist.in.orig	2008-01-21 16:17:03.000000000 +0100
-+++ jabberd-2.1.22/etc/sm.xml.dist.in	2008-01-22 14:37:53.000000000 +0100
-@@ -8,7 +8,7 @@
+diff -ur jabberd-2.2.17.orig/etc/sm.xml.dist.in jabberd-2.2.17/etc/sm.xml.dist.in
+--- jabberd-2.2.17.orig/etc/sm.xml.dist.in	2012-05-04 16:24:36.000000000 +0000
++++ jabberd-2.2.17/etc/sm.xml.dist.in	2013-07-23 17:33:43.782116230 +0000
+@@ -5,7 +5,7 @@
  
    <!-- The process ID file. Comment this out if you don't need to know
         the process ID from outside the process (eg for control scripts) -->
--  <pidfile>@localstatedir@/jabberd/pid/sm.pid</pidfile>
+-  <pidfile>@localstatedir@/@package@/pid/sm.pid</pidfile>
 +  <pidfile>@localstatedir@/run/jabber/sm.pid</pidfile>
  
    <!-- Router connection configuration -->
    <router>
-@@ -63,7 +63,7 @@
+@@ -60,12 +60,12 @@
  
      <!-- If logging to file, this is the filename of the logfile -->
      <!--
--    <file>@localstatedir@/jabberd/log/sm.log</file>
+-    <file>@localstatedir@/@package@/log/sm.log</file>
 +    <file>@localstatedir@/log/jabberd/sm.log</file>
+     -->
+ 
+     <!-- Filename of the debug logfile -->
+     <!--
+-    <debug>@localstatedir@/@package@/log/debug-${id}.log</debug>
++    <debug>@localstatedir@/log/jabberd/debug-${id}.log</debug>
      -->
    </log>
  
-@@ -73,7 +73,7 @@
+@@ -90,7 +90,7 @@
      <path>@pkglibdir@</path>
  
      <!-- By default, we use the SQLite driver for all storage -->
@@ -164,25 +193,25 @@
  
      <!-- Its also possible to explicitly list alternate drivers for
           specific data types. -->
-@@ -114,7 +114,7 @@
+@@ -133,7 +133,7 @@
      <!-- SQLite driver configuration -->
      <sqlite>
        <!-- Database name -->
--      <dbname>@localstatedir@/jabberd/db/sqlite.db</dbname>
+-      <dbname>@localstatedir@/@package@/db/sqlite.db</dbname>
 +      <dbname>@localstatedir@/lib/jabberd/sqlite.db</dbname>
  
        <!-- Transacation support. If this is commented out, transactions
             will be disabled. This might make database accesses faster,
-@@ -181,7 +181,7 @@
-     <!-- Berkeley DB driver configuration -->
+@@ -199,7 +199,7 @@
+          implementation does not implement the 'count' callback). -->
      <db>
        <!-- Directory to store database files under -->
--      <path>@localstatedir@/jabberd/db</path>
+-      <path>@localstatedir@/@package@/db</path>
 +      <path>@localstatedir@/lib/jabberd/db</path>
  
        <!-- Synchronize the database to disk after each write. If you
             disable this, database accesses may be faster, but data may
-@@ -532,6 +532,8 @@
+@@ -595,6 +595,8 @@
      </serverinfo>
      -->
  
