@@ -38,7 +38,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 %{?with_db:BuildRequires:	db-devel >= 4.1.24}
 BuildRequires:	expat-devel
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	gsasl-devel >= 0.2.28
 BuildRequires:	libidn-devel >= 0.3.0
 BuildRequires:	libstdc++-devel
