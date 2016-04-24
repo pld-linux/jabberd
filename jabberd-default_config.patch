@@ -1,12 +1,11 @@
-diff -ur jabberd-2.2.17.orig/etc/c2s.xml.dist.in jabberd-2.2.17/etc/c2s.xml.dist.in
---- jabberd-2.2.17.orig/etc/c2s.xml.dist.in	2012-05-22 20:27:51.000000000 +0000
-+++ jabberd-2.2.17/etc/c2s.xml.dist.in	2013-07-23 17:06:14.939179197 +0000
+--- jabberd-2.3.6/etc/c2s.xml.dist.in.orig	2016-02-09 10:47:02.000000000 +0100
++++ jabberd-2.3.6/etc/c2s.xml.dist.in	2016-04-24 11:17:20.330413849 +0200
 @@ -5,7 +5,7 @@
  
    <!-- The process ID file. Comment this out if you don't need to know
         the process ID from outside the process (eg for control scripts) -->
--  <pidfile>@localstatedir@/@package@/pid/c2s.pid</pidfile>
-+  <pidfile>@localstatedir@/run/jabber/c2s.pid</pidfile>
+-  <pidfile>@localstatedir@/@package@/pid/${id}.pid</pidfile>
++  <pidfile>@localstatedir@/run/jabber/${id}.pid</pidfile>
  
    <!-- Router connection configuration -->
    <router>
@@ -25,7 +24,7 @@ diff -ur jabberd-2.2.17.orig/etc/c2s.xml.dist.in jabberd-2.2.17/etc/c2s.xml.dist
      -->
    </log>
  
-@@ -334,7 +334,7 @@
+@@ -350,7 +350,7 @@
    <stats>
      <!-- file containing count of packets that went through -->
      <!--
@@ -34,7 +33,7 @@ diff -ur jabberd-2.2.17.orig/etc/c2s.xml.dist.in jabberd-2.2.17/etc/c2s.xml.dist
      -->
    </stats>
  
-@@ -370,7 +370,7 @@
+@@ -386,7 +386,7 @@
      <path>@pkglibdir@</path>
  
      <!-- Backend module to use -->
@@ -43,7 +42,7 @@ diff -ur jabberd-2.2.17.orig/etc/c2s.xml.dist.in jabberd-2.2.17/etc/c2s.xml.dist
  
      <!-- Available authentication mechanisms -->
      <mechanisms>
-@@ -421,7 +421,7 @@
+@@ -437,7 +437,7 @@
      <!-- SQLite driver configuration -->
      <sqlite>
        <!-- Database name -->
@@ -52,7 +51,7 @@ diff -ur jabberd-2.2.17.orig/etc/c2s.xml.dist.in jabberd-2.2.17/etc/c2s.xml.dist
  
        <!-- Transacation support. If this is commented out, transactions
             will be disabled. This might make database accesses faster,
-@@ -502,7 +502,7 @@
+@@ -559,7 +559,7 @@
      <!-- Berkeley DB module configuration -->
      <db>
        <!-- Directory to store database files under -->
@@ -75,15 +74,14 @@ diff -ur jabberd-2.2.17.orig/etc/jabberd.cfg.dist.in jabberd-2.2.17/etc/jabberd.
 +# and proper SRV records are set in DNS uncoment this to enable communication
 +# with other Jabber servers
 +#@jabberd_s2s_bin@         @sysconfdir@/s2s.xml
-diff -ur jabberd-2.2.17.orig/etc/router.xml.dist.in jabberd-2.2.17/etc/router.xml.dist.in
---- jabberd-2.2.17.orig/etc/router.xml.dist.in	2012-05-04 16:24:36.000000000 +0000
-+++ jabberd-2.2.17/etc/router.xml.dist.in	2013-07-23 17:00:56.309179075 +0000
+--- jabberd-2.3.6/etc/router.xml.dist.in.orig	2016-02-09 10:47:02.000000000 +0100
++++ jabberd-2.3.6/etc/router.xml.dist.in	2016-04-24 11:19:38.213753642 +0200
 @@ -5,7 +5,7 @@
  
    <!-- The process ID file. Comment this out if you don't need to know
         the process ID from outside the process (eg for control scripts) -->
--  <pidfile>@localstatedir@/@package@/pid/router.pid</pidfile>
-+  <pidfile>@localstatedir@/run/jabber/router.pid</pidfile>
+-  <pidfile>@localstatedir@/@package@/pid/${id}.pid</pidfile>
++  <pidfile>@localstatedir@/run/jabber/${id}.pid</pidfile>
  
    <!-- Log configuration - type is "syslog", "file" or "stdout" -->
    <log type='syslog'>
@@ -121,15 +119,14 @@ diff -ur jabberd-2.2.17.orig/etc/router.xml.dist.in jabberd-2.2.17/etc/router.xm
    </aliases>
  
    <!-- Access control information -->
-diff -ur jabberd-2.2.17.orig/etc/s2s.xml.dist.in jabberd-2.2.17/etc/s2s.xml.dist.in
---- jabberd-2.2.17.orig/etc/s2s.xml.dist.in	2012-08-06 18:18:46.000000000 +0000
-+++ jabberd-2.2.17/etc/s2s.xml.dist.in	2013-07-23 17:04:54.683054085 +0000
+--- jabberd-2.3.6/etc/s2s.xml.dist.in.orig	2016-02-09 10:47:02.000000000 +0100
++++ jabberd-2.3.6/etc/s2s.xml.dist.in	2016-04-24 11:23:03.290429917 +0200
 @@ -5,7 +5,7 @@
  
    <!-- The process ID file. Comment this out if you don't need to know
         the process ID from outside the process (eg for control scripts) -->
--  <pidfile>@localstatedir@/@package@/pid/s2s.pid</pidfile>
-+  <pidfile>@localstatedir@/run/jabber/s2s.pid</pidfile>
+-  <pidfile>@localstatedir@/@package@/pid/${id}.pid</pidfile>
++  <pidfile>@localstatedir@/@package@/run/jabber/${id}.pid</pidfile>
  
    <!-- Router connection configuration -->
    <router>
@@ -148,7 +145,7 @@ diff -ur jabberd-2.2.17.orig/etc/s2s.xml.dist.in jabberd-2.2.17/etc/s2s.xml.dist
      -->
    </log>
  
-@@ -240,7 +240,7 @@
+@@ -245,7 +245,7 @@
    <stats>
      <!-- file containing count of packets that went through -->
      <!--
@@ -157,15 +154,14 @@ diff -ur jabberd-2.2.17.orig/etc/s2s.xml.dist.in jabberd-2.2.17/etc/s2s.xml.dist
      -->
    </stats>
  
-diff -ur jabberd-2.2.17.orig/etc/sm.xml.dist.in jabberd-2.2.17/etc/sm.xml.dist.in
---- jabberd-2.2.17.orig/etc/sm.xml.dist.in	2012-05-04 16:24:36.000000000 +0000
-+++ jabberd-2.2.17/etc/sm.xml.dist.in	2013-07-23 17:33:43.782116230 +0000
+--- jabberd-2.3.6/etc/sm.xml.dist.in.orig	2016-02-09 10:47:02.000000000 +0100
++++ jabberd-2.3.6/etc/sm.xml.dist.in	2016-04-24 11:23:42.243765074 +0200
 @@ -5,7 +5,7 @@
  
    <!-- The process ID file. Comment this out if you don't need to know
         the process ID from outside the process (eg for control scripts) -->
--  <pidfile>@localstatedir@/@package@/pid/sm.pid</pidfile>
-+  <pidfile>@localstatedir@/run/jabber/sm.pid</pidfile>
+-  <pidfile>@localstatedir@/@package@/pid/${id}.pid</pidfile>
++  <pidfile>@localstatedir@/@package@/run/jabber/${id}.pid</pidfile>
  
    <!-- Router connection configuration -->
    <router>
@@ -193,16 +189,16 @@ diff -ur jabberd-2.2.17.orig/etc/sm.xml.dist.in jabberd-2.2.17/etc/sm.xml.dist.i
  
      <!-- Its also possible to explicitly list alternate drivers for
           specific data types. -->
-@@ -133,7 +133,7 @@
+@@ -139,7 +139,7 @@
      <!-- SQLite driver configuration -->
      <sqlite>
        <!-- Database name -->
 -      <dbname>@localstatedir@/@package@/db/sqlite.db</dbname>
 +      <dbname>@localstatedir@/lib/jabberd/sqlite.db</dbname>
  
-       <!-- Transacation support. If this is commented out, transactions
+       <!-- Transaction support. If this is commented out, transactions
             will be disabled. This might make database accesses faster,
-@@ -199,7 +199,7 @@
+@@ -208,7 +208,7 @@
           implementation does not implement the 'count' callback). -->
      <db>
        <!-- Directory to store database files under -->
@@ -211,7 +207,7 @@ diff -ur jabberd-2.2.17.orig/etc/sm.xml.dist.in jabberd-2.2.17/etc/sm.xml.dist.i
  
        <!-- Synchronize the database to disk after each write. If you
             disable this, database accesses may be faster, but data may
-@@ -595,6 +595,8 @@
+@@ -620,6 +620,8 @@
      </serverinfo>
      -->
  

@@ -16,15 +16,14 @@
 Summary:	Jabber/XMPP server
 Summary(pl.UTF-8):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.2.17
+Version:	2.3.6
 Release:	1
 License:	GPL
 Group:		Applications/Communications
-Source0:	https://github.com/downloads/jabberd2/jabberd2/%{name}-%{version}.tar.xz
-# Source0-md5:	8b7d654deaa6566e58ab6630112f9b10
+Source0:	https://github.com/jabberd2/jabberd2/releases/download/jabberd-%{version}/%{name}-%{version}.tar.xz
+# Source0-md5:	e582cfbc77a6e443171c4a6931d707fd
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
-Source3:	db-setup.sqlite
 Patch0:		%{name}-perlscript.patch
 Patch1:		%{name}-daemonize.patch
 Patch2:		%{name}-default_config.patch
@@ -33,8 +32,9 @@ Patch5:		%{name}-binary_path.patch
 Patch6:		%{name}-reconnect.patch
 #bcond bxmpp
 Patch22:	http://www.marquard.net/jabber/patches/patch-flash-v2
-URL:		http://jabberd.jabberstudio.org/
+URL:		http://jabberd2.org/
 BuildRequires:	autoconf
+BuildRequires:	autoconf-archive
 BuildRequires:	automake
 %{?with_db:BuildRequires:	db-devel >= 4.1.24}
 BuildRequires:	expat-devel
@@ -80,8 +80,6 @@ protokół XMPP.
 %patch22 -p0
 %endif
 
-install %{SOURCE3} tools/
-
 %build
 #http://j2.openaether.org/bugzilla/show_bug.cgi?id=17
 %{__libtoolize}
@@ -108,11 +106,13 @@ install %{SOURCE3} tools/
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},/var/lib/%{name}/{db,stats},/etc/{sysconfig,rc.d/init.d}}
+install -d $RPM_BUILD_ROOT%{systemdunitdir}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 mv $RPM_BUILD_ROOT%{_libdir}/jabberd/jabberd $RPM_BUILD_ROOT%{_sbindir}
+mv $RPM_BUILD_ROOT/usr/lib/systemd/system/* $RPM_BUILD_ROOT%{systemdunitdir}/
 %{__rm} $RPM_BUILD_ROOT%{_sysconfdir}/jabber{,/templates}/*.dist 
 
 # drop Upstart configuration files
@@ -136,6 +136,7 @@ fi
 
 /sbin/chkconfig --add jabberd
 %service jabberd restart "Jabber server"
+%systemd_post jabberd.service
 
 %if %{with avatars}
 echo "This j2 package has new functionality, please read AVATARS file."
@@ -146,11 +147,15 @@ if [ "$1" = "0" ]; then
 	%service jabberd stop
 	/sbin/chkconfig --del jabberd
 fi
+%systemd_preun jabberd.service
+
+%postun
+%systemd_reload
 
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README TODO
-%doc tools/{db-setup.mysql,db-setup.pgsql,%{?with_sqlite:db-setup.sqlite,}pipe-auth.pl}
+%doc tools/{%{?with_mysql:db-*.mysql,}%{?with_pgsql:db-*.pgsql,}%{?with_sqlite:db-*.sqlite,}pipe-auth.pl}
 %attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/*.cfg
 %attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/*.xml
 %dir %{_sysconfdir}/jabber/templates
@@ -164,3 +169,8 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %{_mandir}/man*/*
+%{systemdunitdir}/jabberd-c2s.service
+%{systemdunitdir}/jabberd-router.service
+%{systemdunitdir}/jabberd-s2s.service
+%{systemdunitdir}/jabberd-sm.service
+%{systemdunitdir}/jabberd.service
