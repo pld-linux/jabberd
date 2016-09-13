@@ -117,7 +117,7 @@ diff -ur jabberd-2.2.17.orig/etc/jabberd.cfg.dist.in jabberd-2.2.17/etc/jabberd.
    <!-- The process ID file. Comment this out if you don't need to know
         the process ID from outside the process (eg for control scripts) -->
 -  <pidfile>@localstatedir@/@package@/pid/${id}.pid</pidfile>
-+  <pidfile>@localstatedir@/@package@/run/jabber/${id}.pid</pidfile>
++  <pidfile>@localstatedir@/run/jabber/${id}.pid</pidfile>
  
    <!-- Router connection configuration -->
    <router>
@@ -152,7 +152,7 @@ diff -ur jabberd-2.2.17.orig/etc/jabberd.cfg.dist.in jabberd-2.2.17/etc/jabberd.
    <!-- The process ID file. Comment this out if you don't need to know
         the process ID from outside the process (eg for control scripts) -->
 -  <pidfile>@localstatedir@/@package@/pid/${id}.pid</pidfile>
-+  <pidfile>@localstatedir@/@package@/run/jabber/${id}.pid</pidfile>
++  <pidfile>@localstatedir@/run/jabber/${id}.pid</pidfile>
  
    <!-- Router connection configuration -->
    <router>
