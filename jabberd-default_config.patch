@@ -33,15 +33,6 @@
      -->
    </stats>
  
-@@ -386,7 +386,7 @@
-     <path>@pkglibdir@</path>
- 
-     <!-- Backend module to use -->
--    <module>sqlite</module>
-+    <module>db</module>
- 
-     <!-- Available authentication mechanisms -->
-     <mechanisms>
 @@ -437,7 +437,7 @@
      <!-- SQLite driver configuration -->
      <sqlite>
@@ -180,15 +171,6 @@ diff -ur jabberd-2.2.17.orig/etc/jabberd.cfg.dist.in jabberd-2.2.17/etc/jabberd.
      -->
    </log>
  
-@@ -90,7 +90,7 @@
-     <path>@pkglibdir@</path>
- 
-     <!-- By default, we use the SQLite driver for all storage -->
--    <driver>sqlite</driver>
-+    <driver>db</driver>
- 
-     <!-- Its also possible to explicitly list alternate drivers for
-          specific data types. -->
 @@ -139,7 +139,7 @@
      <!-- SQLite driver configuration -->
      <sqlite>
