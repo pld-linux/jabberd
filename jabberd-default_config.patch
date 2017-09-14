@@ -145,8 +145,8 @@ diff -ur jabberd-2.2.17.orig/etc/jabberd.cfg.dist.in jabberd-2.2.17/etc/jabberd.
      -->
    </stats>
  
---- jabberd-2.3.6/etc/sm.xml.dist.in.orig	2016-02-09 10:47:02.000000000 +0100
-+++ jabberd-2.3.6/etc/sm.xml.dist.in	2016-04-24 11:23:42.243765074 +0200
+--- jabberd-2.6.1/etc/sm.xml.dist.in.orig	2016-05-04 00:25:09.000000000 +0200
++++ jabberd-2.6.1/etc/sm.xml.dist.in	2017-09-03 09:50:05.245268159 +0200
 @@ -5,7 +5,7 @@
  
    <!-- The process ID file. Comment this out if you don't need to know
@@ -177,10 +177,10 @@ diff -ur jabberd-2.2.17.orig/etc/jabberd.cfg.dist.in jabberd-2.2.17/etc/jabberd.
        <!-- Database name -->
 -      <dbname>@localstatedir@/@package@/db/sqlite.db</dbname>
 +      <dbname>@localstatedir@/lib/jabberd/sqlite.db</dbname>
- 
-       <!-- Transaction support. If this is commented out, transactions
-            will be disabled. This might make database accesses faster,
-@@ -208,7 +208,7 @@
+      <!-- Use this to pass any SQL statements to the database immediately
+           after opening it. This is typically used to set pragmas for
+           performance tuning. -->
+@@ -217,7 +217,7 @@
           implementation does not implement the 'count' callback). -->
      <db>
        <!-- Directory to store database files under -->
@@ -189,7 +189,7 @@ diff -ur jabberd-2.2.17.orig/etc/jabberd.cfg.dist.in jabberd-2.2.17/etc/jabberd.
  
        <!-- Synchronize the database to disk after each write. If you
             disable this, database accesses may be faster, but data may
-@@ -620,6 +620,8 @@
+@@ -629,6 +629,8 @@
      </serverinfo>
      -->
  

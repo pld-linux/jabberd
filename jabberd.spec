@@ -16,12 +16,12 @@
 Summary:	Jabber/XMPP server
 Summary(pl.UTF-8):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.3.6
+Version:	2.6.1
 Release:	1
 License:	GPL
 Group:		Applications/Communications
 Source0:	https://github.com/jabberd2/jabberd2/releases/download/jabberd-%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	e582cfbc77a6e443171c4a6931d707fd
+# Source0-md5:	cfe1b7fb77ccc9905cc18aabded9a1de
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-perlscript.patch
@@ -57,6 +57,8 @@ Requires(post):	textutils
 Requires(post,preun):	/sbin/chkconfig
 Requires:	jabber-common
 Requires:	rc-scripts
+Suggests:	cyrus-sasl-digest-md5
+Suggests:	cyrus-sasl-plain
 Obsoletes:	jabber
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
