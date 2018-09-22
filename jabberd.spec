@@ -17,7 +17,7 @@ Summary:	Jabber/XMPP server
 Summary(pl.UTF-8):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.6.1
-Release:	3
+Release:	4
 License:	GPL
 Group:		Applications/Communications
 Source0:	https://github.com/jabberd2/jabberd2/releases/download/jabberd-%{version}/%{name}-%{version}.tar.xz
@@ -30,6 +30,7 @@ Patch2:		%{name}-default_config.patch
 Patch4:		%{name}-delay_jobs.patch
 Patch5:		%{name}-binary_path.patch
 Patch6:		%{name}-reconnect.patch
+Patch7:		openssl11.diff
 #bcond bxmpp
 Patch22:	http://www.marquard.net/jabber/patches/patch-flash-v2
 URL:		http://jabberd2.org/
@@ -77,6 +78,7 @@ protokół XMPP.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 %if %{with bxmpp}
 %patch22 -p0
@@ -101,7 +103,8 @@ protokół XMPP.
 	--enable-pam \
 	%{?with_ldap:--enable-ldap} \
 	%{?with_sqlite:--enable-sqlite} \
-	%{?debug:--enable-debug}
+	%{?debug:--enable-debug} \
+	--disable-silent-rules
 
 %{__make}
 
