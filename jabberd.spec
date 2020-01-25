@@ -12,7 +12,6 @@
 
 %define		skip_post_check_so	mod_.*.so.0.0.0 libstorage.so.0.0.0
 
-%include	/usr/lib/rpm/macros.perl
 Summary:	Jabber/XMPP server
 Summary(pl.UTF-8):	Serwer Jabber/XMPP
 Name:		jabberd
