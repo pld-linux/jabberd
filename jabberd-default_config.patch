@@ -1,5 +1,6 @@
---- jabberd-2.3.6/etc/c2s.xml.dist.in.orig	2016-02-09 10:47:02.000000000 +0100
-+++ jabberd-2.3.6/etc/c2s.xml.dist.in	2016-04-24 11:17:20.330413849 +0200
+diff -urNp -x '*.orig' jabberd-2.6.1.org/etc/c2s.xml.dist.in jabberd-2.6.1/etc/c2s.xml.dist.in
+--- jabberd-2.6.1.org/etc/c2s.xml.dist.in	2016-10-09 11:47:52.000000000 +0200
++++ jabberd-2.6.1/etc/c2s.xml.dist.in	2021-10-06 23:07:15.380661414 +0200
 @@ -5,7 +5,7 @@
  
    <!-- The process ID file. Comment this out if you don't need to know
@@ -24,7 +25,7 @@
      -->
    </log>
  
-@@ -350,7 +350,7 @@
+@@ -348,7 +348,7 @@
    <stats>
      <!-- file containing count of packets that went through -->
      <!--
@@ -33,16 +34,16 @@
      -->
    </stats>
  
-@@ -437,7 +437,7 @@
+@@ -435,7 +435,7 @@
      <!-- SQLite driver configuration -->
      <sqlite>
        <!-- Database name -->
 -      <dbname>@localstatedir@/@package@/db/sqlite.db</dbname>
 +      <dbname>@localstatedir@/lib/jabberd/sqlite.db</dbname>
  
-       <!-- Transacation support. If this is commented out, transactions
-            will be disabled. This might make database accesses faster,
-@@ -559,7 +559,7 @@
+     <!-- Use this to pass any SQL statements to the database immediately
+ 	  after opening it. This is typically used to set pragmas for
+@@ -562,7 +562,7 @@
      <!-- Berkeley DB module configuration -->
      <db>
        <!-- Directory to store database files under -->
@@ -51,9 +52,9 @@
  
        <!-- Synchronize the database to disk after each write. If you
             disable this, database accesses may be faster, but data may
-diff -ur jabberd-2.2.17.orig/etc/jabberd.cfg.dist.in jabberd-2.2.17/etc/jabberd.cfg.dist.in
---- jabberd-2.2.17.orig/etc/jabberd.cfg.dist.in	2012-05-04 16:24:36.000000000 +0000
-+++ jabberd-2.2.17/etc/jabberd.cfg.dist.in	2013-07-23 16:58:45.510179289 +0000
+diff -urNp -x '*.orig' jabberd-2.6.1.org/etc/jabberd.cfg.dist.in jabberd-2.6.1/etc/jabberd.cfg.dist.in
+--- jabberd-2.6.1.org/etc/jabberd.cfg.dist.in	2016-05-04 00:25:09.000000000 +0200
++++ jabberd-2.6.1/etc/jabberd.cfg.dist.in	2021-10-06 23:07:15.380661414 +0200
 @@ -14,5 +14,9 @@
  
  @jabberd_router_bin@      @sysconfdir@/router.xml
@@ -65,8 +66,9 @@ diff -ur jabberd-2.2.17.orig/etc/jabberd.cfg.dist.in jabberd-2.2.17/etc/jabberd.
 +# and proper SRV records are set in DNS uncoment this to enable communication
 +# with other Jabber servers
 +#@jabberd_s2s_bin@         @sysconfdir@/s2s.xml
---- jabberd-2.3.6/etc/router.xml.dist.in.orig	2016-02-09 10:47:02.000000000 +0100
-+++ jabberd-2.3.6/etc/router.xml.dist.in	2016-04-24 11:19:38.213753642 +0200
+diff -urNp -x '*.orig' jabberd-2.6.1.org/etc/router.xml.dist.in jabberd-2.6.1/etc/router.xml.dist.in
+--- jabberd-2.6.1.org/etc/router.xml.dist.in	2016-05-04 00:25:09.000000000 +0200
++++ jabberd-2.6.1/etc/router.xml.dist.in	2021-10-06 23:07:15.380661414 +0200
 @@ -5,7 +5,7 @@
  
    <!-- The process ID file. Comment this out if you don't need to know
@@ -110,8 +112,9 @@ diff -ur jabberd-2.2.17.orig/etc/jabberd.cfg.dist.in jabberd-2.2.17/etc/jabberd.
    </aliases>
  
    <!-- Access control information -->
---- jabberd-2.3.6/etc/s2s.xml.dist.in.orig	2016-02-09 10:47:02.000000000 +0100
-+++ jabberd-2.3.6/etc/s2s.xml.dist.in	2016-04-24 11:23:03.290429917 +0200
+diff -urNp -x '*.orig' jabberd-2.6.1.org/etc/s2s.xml.dist.in jabberd-2.6.1/etc/s2s.xml.dist.in
+--- jabberd-2.6.1.org/etc/s2s.xml.dist.in	2016-05-04 00:25:09.000000000 +0200
++++ jabberd-2.6.1/etc/s2s.xml.dist.in	2021-10-06 23:07:15.380661414 +0200
 @@ -5,7 +5,7 @@
  
    <!-- The process ID file. Comment this out if you don't need to know
@@ -145,8 +148,9 @@ diff -ur jabberd-2.2.17.orig/etc/jabberd.cfg.dist.in jabberd-2.2.17/etc/jabberd.
      -->
    </stats>
  
---- jabberd-2.6.1/etc/sm.xml.dist.in.orig	2016-05-04 00:25:09.000000000 +0200
-+++ jabberd-2.6.1/etc/sm.xml.dist.in	2017-09-03 09:50:05.245268159 +0200
+diff -urNp -x '*.orig' jabberd-2.6.1.org/etc/sm.xml.dist.in jabberd-2.6.1/etc/sm.xml.dist.in
+--- jabberd-2.6.1.org/etc/sm.xml.dist.in	2016-05-04 00:25:09.000000000 +0200
++++ jabberd-2.6.1/etc/sm.xml.dist.in	2021-10-06 23:07:15.380661414 +0200
 @@ -5,7 +5,7 @@
  
    <!-- The process ID file. Comment this out if you don't need to know
