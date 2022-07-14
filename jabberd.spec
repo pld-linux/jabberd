@@ -1,10 +1,11 @@
+# TODO: oracle/oci bcond
 #
 # Conditional build
-%bcond_without	db	# don't build db storage and authreg backends
-%bcond_without	ldap	# don't build ldap authreg backend
-%bcond_without	mysql	# don't build MySQL storage and authreg backends
-%bcond_without	pgsql	# don't build PostgreSQL storage and authreg backends
-%bcond_without	sqlite	# don't build SQLite v3 storage backend
+%bcond_without	db	# db storage and authreg backends
+%bcond_without	ldap	# ldap authreg backend
+%bcond_without	mysql	# MySQL storage and authreg backends
+%bcond_without	pgsql	# PostgreSQL storage and authreg backends
+%bcond_without	sqlite	# SQLite v3 storage backend
 # allows limiting the number of offline messages stored per user (mysql storage)
 # and allows offline storage (queuing) of subscription requests and/or messages
 # to be disabled
@@ -15,12 +16,12 @@
 Summary:	Jabber/XMPP server
 Summary(pl.UTF-8):	Serwer Jabber/XMPP
 Name:		jabberd
-Version:	2.6.1
-Release:	6
-License:	GPL
+Version:	2.7.0
+Release:	1
+License:	GPL v2+
 Group:		Applications/Communications
 Source0:	https://github.com/jabberd2/jabberd2/releases/download/jabberd-%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	cfe1b7fb77ccc9905cc18aabded9a1de
+# Source0-md5:	39b4b5286a1ad91ff84c3588fa26efa8
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-perlscript.patch
@@ -28,38 +29,40 @@ Patch1:		%{name}-daemonize.patch
 Patch2:		%{name}-default_config.patch
 Patch4:		%{name}-delay_jobs.patch
 Patch5:		%{name}-binary_path.patch
-Patch6:		%{name}-reconnect.patch
-Patch7:		openssl11.diff
 #bcond bxmpp
 Patch22:	http://www.marquard.net/jabber/patches/patch-flash-v2
 URL:		http://jabberd2.org/
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.61
 BuildRequires:	autoconf-archive
-BuildRequires:	automake
+BuildRequires:	automake >= 1:1.11
 %{?with_db:BuildRequires:	db-devel >= 4.1.24}
 BuildRequires:	expat-devel
 BuildRequires:	gettext-tools
-BuildRequires:	gsasl-devel >= 0.2.28
+BuildRequires:	gsasl-devel >= 1.4.0
 BuildRequires:	libidn-devel >= 0.3.0
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
-%{?with_mysql:BuildRequires:	mysql-devel}
-%{?with_ldap:BuildRequires:	openldap-devel}
-BuildRequires:	openssl-devel >= 0.9.6d
+%{?with_mysql:BuildRequires:	mysql-devel >= 5}
+%{?with_ldap:BuildRequires:	openldap-devel >= 2.1.0}
+BuildRequires:	openssl-devel >= 1.0.2
 BuildRequires:	pam-devel
-%{?with_pgsql:BuildRequires:	postgresql-devel}
+%{?with_pgsql:BuildRequires:	postgresql-devel >= 8}
 BuildRequires:	rpm-perlprov >= 3.0.3-16
 BuildRequires:	rpmbuild(macros) >= 1.268
-%{?with_sqlite:BuildRequires:	sqlite3-devel}
+%{?with_sqlite:BuildRequires:	sqlite3-devel >= 3}
 BuildRequires:	udns-devel
+BuildRequires:	zlib-devel
 Requires(post):	sed >= 4.0
 Requires(post):	textutils
 Requires(post,preun):	/sbin/chkconfig
+Requires:	gsasl >= 1.4.0
 Requires:	jabber-common
+Requires:	libidn >= 0.3.0
+Requires:	openssl >= 1.0.2
 Requires:	rc-scripts
 Suggests:	cyrus-sasl-digest-md5
 Suggests:	cyrus-sasl-plain
-Obsoletes:	jabber
+Obsoletes:	jabber < 2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -76,8 +79,6 @@ protokół XMPP.
 %patch2 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
-%patch7 -p1
 
 %if %{with bxmpp}
 %patch22 -p0
@@ -115,8 +116,8 @@ install -d $RPM_BUILD_ROOT%{systemdunitdir}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-mv $RPM_BUILD_ROOT%{_libdir}/jabberd/jabberd $RPM_BUILD_ROOT%{_sbindir}
-mv $RPM_BUILD_ROOT/usr/lib/systemd/system/* $RPM_BUILD_ROOT%{systemdunitdir}/
+%{__mv} $RPM_BUILD_ROOT%{_libdir}/jabberd/jabberd $RPM_BUILD_ROOT%{_sbindir}
+%{__mv} $RPM_BUILD_ROOT/usr/lib/systemd/system/* $RPM_BUILD_ROOT%{systemdunitdir}
 %{__rm} $RPM_BUILD_ROOT%{_sysconfdir}/jabber{,/templates}/*.dist 
 
 # drop Upstart configuration files
