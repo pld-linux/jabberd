@@ -164,15 +164,28 @@ fi
 %attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/*.xml
 %dir %{_sysconfdir}/jabber/templates
 %attr(640,root,jabber) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/jabber/templates/*.xml
-%attr(755,root,root) %{_sbindir}/*
+%attr(755,root,root) %{_sbindir}/jabberd
 %dir %{_libdir}/jabberd
-%attr(755,root,root) %{_libdir}/%{name}/*
+%attr(755,root,root) %{_libdir}/%{name}/c2s
+%attr(755,root,root) %{_libdir}/%{name}/router
+%attr(755,root,root) %{_libdir}/%{name}/s2s
+%attr(755,root,root) %{_libdir}/%{name}/sm
+%attr(755,root,root) %{_libdir}/%{name}/libstorage.so*
+%attr(755,root,root) %{_libdir}/%{name}/authreg_*.so*
+%attr(755,root,root) %{_libdir}/%{name}/mod_*.so*
+%attr(755,root,root) %{_libdir}/%{name}/storage_*.so*
+# XXX: are these needed?
+%{_libdir}/%{name}/*.la
 %dir %attr(770,root,jabber) /var/lib/%{name}
 %dir %attr(770,root,jabber) /var/lib/%{name}/db
 %dir %attr(770,root,jabber) /var/lib/%{name}/stats
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
-%{_mandir}/man*/*
+%{_mandir}/man8/c2s.8*
+%{_mandir}/man8/jabberd.8*
+%{_mandir}/man8/router.8*
+%{_mandir}/man8/s2s.8*
+%{_mandir}/man8/sm.8*
 %{systemdunitdir}/jabberd-c2s.service
 %{systemdunitdir}/jabberd-router.service
 %{systemdunitdir}/jabberd-s2s.service
