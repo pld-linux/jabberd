@@ -1,0 +1,22 @@
+--- jabberd-2.7.0/storage/authreg_mysql.c.orig	2025-12-05 11:44:29.000000000 +0100
++++ jabberd-2.7.0/storage/authreg_mysql.c	2025-12-05 11:46:46.116654091 +0100
+@@ -489,7 +489,7 @@
+     mysqlcontext_t mysqlcontext;
+     int fail = 0;
+     /* enable reconnect */
+-    my_bool reconnect= 1;
++    bool reconnect= 1;
+ 
+     /* configure the database context with field names and SQL statements */
+     mysqlcontext = (mysqlcontext_t) malloc( sizeof( struct mysqlcontext_st ) );
+--- jabberd-2.7.0/storage/storage_mysql.c~	2018-04-22 11:41:35.000000000 +0200
++++ jabberd-2.7.0/storage/storage_mysql.c	2025-12-05 11:47:16.593320763 +0100
+@@ -585,7 +585,7 @@
+     MYSQL *conn;
+     drvdata_t data;
+     /* enable reconnect */
+-    my_bool reconnect= 1;
++    bool reconnect= 1;
+ 
+     host = config_get_one(drv->st->config, "storage.mysql.host", 0);
+     port = config_get_one(drv->st->config, "storage.mysql.port", 0);

@@ -17,7 +17,7 @@ Summary:	Jabber/XMPP server
 Summary(pl.UTF-8):	Serwer Jabber/XMPP
 Name:		jabberd
 Version:	2.7.0
-Release:	3
+Release:	4
 License:	GPL v2+
 Group:		Applications/Communications
 Source0:	https://github.com/jabberd2/jabberd2/releases/download/jabberd-%{version}/%{name}-%{version}.tar.xz
@@ -29,6 +29,8 @@ Patch1:		%{name}-daemonize.patch
 Patch2:		%{name}-default_config.patch
 Patch4:		%{name}-delay_jobs.patch
 Patch5:		%{name}-binary_path.patch
+Patch6:		%{name}-c99.patch
+Patch7:		mysql84.patch
 #bcond bxmpp
 Patch22:	http://www.marquard.net/jabber/patches/patch-flash-v2
 URL:		http://jabberd2.org/
@@ -79,6 +81,8 @@ protokół XMPP.
 %patch -P2 -p1
 %patch -P4 -p1
 %patch -P5 -p1
+%patch -P6 -p1
+%patch -P7 -p1
 
 %if %{with bxmpp}
 %patch -P22 -p0
@@ -171,10 +175,10 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/router
 %attr(755,root,root) %{_libdir}/%{name}/s2s
 %attr(755,root,root) %{_libdir}/%{name}/sm
-%attr(755,root,root) %{_libdir}/%{name}/libstorage.so*
-%attr(755,root,root) %{_libdir}/%{name}/authreg_*.so*
-%attr(755,root,root) %{_libdir}/%{name}/mod_*.so*
-%attr(755,root,root) %{_libdir}/%{name}/storage_*.so*
+%{_libdir}/%{name}/libstorage.so*
+%{_libdir}/%{name}/authreg_*.so*
+%{_libdir}/%{name}/mod_*.so*
+%{_libdir}/%{name}/storage_*.so*
 # XXX: are these needed?
 %{_libdir}/%{name}/*.la
 %dir %attr(770,root,jabber) /var/lib/%{name}

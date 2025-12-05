@@ -1,0 +1,132 @@
+diff --git a/configure b/configure
+index 551a963ae06a3624..06ba2c4ebde3e9ab 100755
+--- a/configure
++++ b/configure
+@@ -16341,8 +16341,9 @@ else
+ /* end confdefs.h.  */
+ #include <stdio.h>
+                                     #include <signal.h>
+-                                    segv() { exit(1); }
+-                                    main() { char b[10]; signal(SIGSEGV,segv); snprintf(b,10,"%s",NULL); exit(0); }
++                                    #include <stdlib.h>
++                                    void segv() { exit(1); }
++                                    int main() { char b[10]; signal(SIGSEGV,segv); snprintf(b,10,"%s",NULL); exit(0); }
+ _ACEOF
+ if ac_fn_c_try_run "$LINENO"; then :
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+@@ -16373,9 +16374,10 @@ else
+ #include <stdio.h>
+                                     #include <signal.h>
+                                     #include <stdarg.h>
+-                                    segv() { exit(1); }
+-                                    expand(char *f,...) { va_list ap; char b[10]; va_start(ap,f); vsnprintf(b,10,f,ap); va_end(ap); }
+-                                    main() { char b[10]; signal(SIGSEGV,segv); expand("%s", NULL); exit(0); }
++                                    #include <stdlib.h>
++                                    void segv() { exit(1); }
++                                    void expand(char *f,...) { va_list ap; char b[10]; va_start(ap,f); vsnprintf(b,10,f,ap); va_end(ap); }
++                                    int main() { char b[10]; signal(SIGSEGV,segv); expand("%s", NULL); exit(0); }
+ _ACEOF
+ if ac_fn_c_try_run "$LINENO"; then :
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+diff --git a/configure.ac b/configure.ac
+index af173540785271fd..071933830f3676b2 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -323,8 +323,9 @@ if test "x-$ac_cv_func_snprintf" = "x-yes" ; then
+     AC_MSG_CHECKING([if snprintf can handle NULL arguments])
+     AC_RUN_IFELSE([AC_LANG_SOURCE([[#include <stdio.h>
+                                     #include <signal.h>
+-                                    segv() { exit(1); }
+-                                    main() { char b[10]; signal(SIGSEGV,segv); snprintf(b,10,"%s",NULL); exit(0); }]])],
++                                    #include <stdlib.h>
++                                    void segv() { exit(1); }
++                                    int main() { char b[10]; signal(SIGSEGV,segv); snprintf(b,10,"%s",NULL); exit(0); }]])],
+                   AC_MSG_RESULT(yes),
+                   [AC_MSG_RESULT(no)
+                    AC_DEFINE(HAVE_BROKEN_SNPRINTF,1,[Define to 1 if 'snprintf' cannot handle NULL arguments.])])
+@@ -334,9 +335,10 @@ if test "x-$ac_cv_func_vsnprintf" = "x-yes" ; then
+     AC_RUN_IFELSE([AC_LANG_SOURCE([[#include <stdio.h>
+                                     #include <signal.h>
+                                     #include <stdarg.h>
+-                                    segv() { exit(1); }
+-                                    expand(char *f,...) { va_list ap; char b[10]; va_start(ap,f); vsnprintf(b,10,f,ap); va_end(ap); }
+-                                    main() { char b[10]; signal(SIGSEGV,segv); expand("%s", NULL); exit(0); }]])],
++                                    #include <stdlib.h>
++                                    void segv() { exit(1); }
++                                    void expand(char *f,...) { va_list ap; char b[10]; va_start(ap,f); vsnprintf(b,10,f,ap); va_end(ap); }
++                                    int main() { char b[10]; signal(SIGSEGV,segv); expand("%s", NULL); exit(0); }]])],
+                   AC_MSG_RESULT(yes),
+                   [AC_MSG_RESULT(no)
+                    AC_DEFINE(HAVE_BROKEN_VSNPRINTF,1,[Define to 1 if 'vsnprintf' cannot handle NULL arguments.])])
+diff --git a/storage/authreg_ldapfull.c b/storage/authreg_ldapfull.c
+index 6dbf202bf8627925..a545ad1dcb6cccb9 100644
+--- a/storage/authreg_ldapfull.c
++++ b/storage/authreg_ldapfull.c
+@@ -35,6 +35,7 @@
+ #ifdef STORAGE_LDAP
+ #ifdef HAVE_CRYPT
+ #include <unistd.h>
++#include <crypt.h>
+ #endif
+ 
+ #ifdef HAVE_SSL
+diff --git a/storage/authreg_mysql.c b/storage/authreg_mysql.c
+index 0b35d6ddfd40c3af..5e15143837e66c08 100644
+--- a/storage/authreg_mysql.c
++++ b/storage/authreg_mysql.c
+@@ -34,6 +34,7 @@
+ #else
+ #ifdef HAVE_CRYPT
+ #include <unistd.h>
++#include <crypt.h>
+ #endif
+ #endif
+ 
+diff --git a/storage/authreg_pgsql.c b/storage/authreg_pgsql.c
+index 446fa1f8217b162a..1065c5d35b629737 100644
+--- a/storage/authreg_pgsql.c
++++ b/storage/authreg_pgsql.c
+@@ -32,6 +32,7 @@
+ #else
+ #ifdef HAVE_CRYPT
+ #include <unistd.h>
++#include <crypt.h>
+ #endif
+ #endif
+ 
+diff --git a/storage/authreg_sqlite.c b/storage/authreg_sqlite.c
+index 25058ee639238a91..dcd4cadba3504fa5 100644
+--- a/storage/authreg_sqlite.c
++++ b/storage/authreg_sqlite.c
+@@ -41,6 +41,7 @@
+ #else
+ #ifdef HAVE_CRYPT
+ #include <unistd.h>
++#include <crypt.h>
+ #endif
+ #endif
+ 
+diff --git a/sx/websocket.c b/sx/websocket.c
+index b08e135f4966c592..4df051559850dfe1 100644
+--- a/sx/websocket.c
++++ b/sx/websocket.c
+@@ -22,6 +22,7 @@
+  * http://tools.ietf.org/html/rfc7395
+  */
+ 
++#define _GNU_SOURCE
+ #include "sx.h"
+ #include <stdarg.h>
+ #include <string.h>
+diff --git a/util/crypt_blowfish.h b/util/crypt_blowfish.h
+index d81e8cbdea9473d0..8ba1a917a84e9276 100644
+--- a/util/crypt_blowfish.h
++++ b/util/crypt_blowfish.h
+@@ -23,7 +23,6 @@
+ #endif
+ 
+ extern char *bcrypt(__const char *key, __const char *setting);
+-extern char *crypt_r(__const char *key, __const char *setting, void *data);
+ 
+ #ifndef __SKIP_OW
+ extern char *crypt_rn(__const char *key, __const char *setting,
